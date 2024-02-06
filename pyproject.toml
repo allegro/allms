@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "llm-wrapper"
+version = "0.5.0"
+description = ""
+authors = ["Allegro Opensource <opensource@allegro.com>"]
+readme = "README.md"
+packages = [{include = "llm_wrapper"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fsspec = "^2023.6.0"
+pandas = "^2.0.3"
+openai = "^0.27.8"
+google-cloud-aiplatform = "1.38.0"
+tiktoken = "^0.4.0"
+pydash = "^7.0.6"
+transformers = "^4.34.1"
+pydantic = "1.10.13"
+langchain = "^0.0.351"
+aioresponses = "^0.7.6"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+pylint = "^2.17.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,12 @@
+# https://docs.github.com/en/free-pro-team@latest/github/administering-a-repository/keeping-your-dependencies-updated-automatically
+version: 2
+registries:
+  updates:
+    - package-ecosystem: "github-actions"
+      directory: "/"
+      schedule:
+        interval: "weekly"
+    - package-ecosystem: "pip"
+      directory: "/"
+      schedule:
+        interval: "weekly"
