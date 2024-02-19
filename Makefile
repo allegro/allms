@@ -13,3 +13,7 @@ linter::
 
 tests::
 	poetry run python -m pytest -s --verbose
+
+
+deploy-docs::
+	poetry run mkdocs gh-deploy --force
