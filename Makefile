@@ -15,5 +15,5 @@ tests::
 	poetry run python -m pytest -s --verbose
 
 
-deploy-docs::
-	poetry run mkdocs gh-deploy --force
+docs::
+	poetry run mkdocs build
