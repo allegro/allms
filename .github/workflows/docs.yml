@@ -29,7 +29,7 @@ jobs:
       - run: python -m pip install build
       - run: make install-poetry
       - run: make install-env
-      - run: poetry run mkdocs build
+      - run: make docs
       - uses: actions/upload-pages-artifact@v3
         with:
           path: 'site'
