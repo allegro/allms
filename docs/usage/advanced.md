@@ -1,9 +1,6 @@
----
-layout: default
-title: Batch query
-nav_order: 1
-parent: Tutorial
----
+# Advanced Usage
+
+## Symbolic Variables and Batch Mode
 
 If you want to generate responses for a batch of examples, you can achieve this by preparing a prompt with symbolic
 variables and providing input data that will be injected into this prompt. `llm-wrapper` will automatically make these
@@ -11,6 +8,20 @@ requests in an async mode and retry them in case of any API error.
 
 Let's say we want to classify reviews of coffee as positive or negative. Here's how to do it:
 ```python
+from llm_wrapper.models import AzureOpenAIModel
+from llm_wrapper.domain.configuration import AzureOpenAIConfiguration
+from llm_wrapper.domain.input_data import InputData
+
+configuration = AzureOpenAIConfiguration(
+    api_key="<OPENAI_API_KEY>",
+    base_url="<OPENAI_API_BASE>",
+    api_version="<OPENAI_API_VERSION>",
+    deployment="<OPENAI_API_DEPLOYMENT_NAME>",
+    model_name="<OPENAI_API_MODEL_NAME>"
+)
+
+model = AzureOpenAIModel(config=configuration)
+
 positive_review_0 = "Very good coffee, lightly roasted, with good aroma and taste. The taste of sourness is barely noticeable (which is good because I don't like sour coffees). After grinding, the aroma spreads throughout the room. I recommend it to all those who do not like strongly roasted and pitch-black coffees. A very good solution is to close the package with string, which allows you to preserve the aroma and freshness."
 positive_review_1 = "Delicious coffee!! Delicate, just the way I like it, and the smell after opening is amazing. It smells freshly roasted. Faithful to Lavazza coffee for years, I decided to look for other flavors. Based on the reviews, I blindly bought it and it was a 10-shot, it outperformed Lavazze in taste. For me the best."
 negative_review = "Marketing is doing its job and I was tempted too, but this coffee is nothing above the level of coffees from the supermarket. And the method of brewing or grinding does not help here. The coffee is simply weak - both in terms of strength and taste. I do not recommend."
@@ -68,12 +79,12 @@ And the results:
 }
 ```
 
-## Control the number of concurrent requests
+## Controlling the Number of Concurrent Requests
 As it's written above, `llm-wrapper` automatically makes requests in an async mode. By default, the maximum number of 
 concurrent requests is set to 1000. You can control this value by setting the `max_concurrency` parameter when
 initializing the model. Set it to a value that is appropriate for your model endpoint.
 
-## Use a common asyncio event loop
+## Using a common asyncio event loop
 By default, each model instance has its own event loop for handling the execution of async tasks. If you want to use
 a common loop for multiple models or to have a custom loop, it's possible to specify it in the model constructor:
 

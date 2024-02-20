@@ -1,10 +1,4 @@
----
-layout: default
-title: Error handling
-nav_order: 3
-parent: Tutorial
----
-
+# Error Handling
 
 ## Too long prompt
 Each LLM has its own context size defined. This is the maximum number of input plus output tokens that the model is able

@@ -1,11 +1,3 @@
----
-layout: default
-title: VertexAIGeminiModel
-parent: Models
-grand_parent: API
-nav_order: 4
----
-
 ## `class llm_wrapper.models.VertexAIGeminiModel` API
 ### Methods
 ```python

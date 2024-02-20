@@ -1,9 +1,4 @@
----
-layout: default
-title: Azure Open-source Models Deployment
-nav_order: 4
-parent: Tutorial
----
+# How to Deploy Azure Open-source LLMs?
 
 
 To use Open-source models like Llama or Mistral with llm-wrapper, first you have to deploy it on your own on Azure as a ML Online Endpoint. 

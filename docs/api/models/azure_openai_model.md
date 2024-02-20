@@ -1,11 +1,3 @@
----
-layout: default
-title: AzureOpenAIModel
-parent: Models
-grand_parent: API
-nav_order: 1
----
-
 ## `class llm_wrapper.models.AzureOpenAIModel` API
 ### Methods
 ```python

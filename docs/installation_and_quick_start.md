@@ -1,9 +1,3 @@
----
-layout: default
-title: Installation & Quick start
-nav_order: 1
----
-
 # Installation
 Install the package via pip:
 
