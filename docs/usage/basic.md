@@ -29,4 +29,17 @@ As a response you'll get `List[ResponseData]`, where the first element will cont
 `ResponseData.response` field and also information about number of prompt and generated tokens. If any error occurred
 also `ResponseData.error` field will be filled with the actual exception.
 
+## Single Query with System Prompt
+
+A System Prompt can be passed along with a standard prompt. Please note that adding a system prompt will increase the 
+prompt token count for your query, increasing costs and latency.
+
+```python
+response = model.generate(
+    system_prompt="You are an AI agent answering questions like a student during an exam. Answer the question in Polish.",
+    prompt="What is the capital of Poland?"
+)
+print(response)
+# Stolica Polski to Warszawa.
+```
 

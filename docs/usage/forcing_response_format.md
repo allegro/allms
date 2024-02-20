@@ -27,7 +27,7 @@ description, you make it easier for the model to generate proper response.
 automatically force the model to output the data in the provided format and will parse the string returned from the
 model to the provided data model class.
 
-    ```python
+ ```python
     review = "Marketing is doing its job and I was tempted too, but this Blue Orca coffee is nothing above the level of coffees from the supermarket. And the method of brewing or grinding does not help here. The coffee is simply weak - both in terms of strength and taste. I do not recommend."
     
     prompt = "Summarize review of the coffee. Review: {review}"
@@ -41,7 +41,7 @@ model to the provided data model class.
         output_data_model_class=ReviewOutputDataModel
     )
     response = responses[0].response
-    ```
+```
 
 Now we can check the response:
 ```python
