@@ -1,2 +1,19 @@
 site_name: llm-wrapper
 theme: readthedocs
+nav:
+  - Introduction: index.md
+  - Installation & Quickstart: installation_and_quick_start.md
+  - F.A.Q: faq.md
+  - User guide:
+      - Basic: usage/basic.md
+      - Advanced: usage/advanced.md
+      - Forcing Structured Output Format: usage/forcing_response_format.md
+      - Azure Open-source Models Deployment: usage/deploy_open_source_models.md
+  - API:
+      - Domain: api/input_output_dataclasses.md
+      - Models:
+          - Azure Llama2: api/models/azure_llama2_model.md
+          - Azure Mistral: api/models/azure_mistral_model.md
+          - Azure OpenAI GPT: api/models/azure_openai_model.md
+          - VertexAI PaLM2: api/models/vertexai_palm_model.md
+          - VertexAI Gemini: api/models/vertexai_gemini_model.md

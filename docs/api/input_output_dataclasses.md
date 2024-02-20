@@ -1,11 +1,3 @@
----
-layout: default
-title: Input/Output dataclasses
-nav_order: 0
-parent: API
----
-
-
 ## `class llm_wrapper.domain.input_data.InputData` dataclass
 ```python
 @dataclass

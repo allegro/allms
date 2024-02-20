@@ -1,9 +1,3 @@
----
-layout: default
-title: Introduction
-nav_order: 0
----
-
 <p align="center">
 <img src="assets/images/logo.png" alt="LLM-Wrapper Logo"/>
 </p>

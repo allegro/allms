@@ -1,11 +1,3 @@
----
-layout: default
-title: VertexAIPalmModel
-parent: Models
-grand_parent: API
-nav_order: 2
----
-
 ## `class llm_wrapper.models.VertexAIPalmModel` API
 ### Methods
 ```python

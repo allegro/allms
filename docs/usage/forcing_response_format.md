@@ -1,9 +1,6 @@
----
-layout: default
-title: Forcing model response format
-nav_order: 2
-parent: Tutorial
----
+# Forcing Structured Response Format
+
+## Pydantic BaseModels Integration
 
 If you want to force the model to output the response in a given JSON schema, `llm-wrapper` provides an easy way to do 
 it. You just need to provide a data model that describes the desired output format and the package does all the rest. 
@@ -64,7 +61,7 @@ False
 ['Weak in terms of strength', 'Weak in terms of taste']
 ```
 
-### What to do when output formatting doesn't work?
+## What to do when output formatting doesn't work?
 
 The feature described above works best with advanced proprietary models like GPT and PaLM/Gemini. Less capable models like Llama2 or Mistral
 may not able to understand instructions passed as output_dataclasses, and in most cases the returned response won't be compatible
@@ -74,7 +71,7 @@ In such cases, we recommend to address the issue by specifying in the prompt how
 few-shot learning techniques is also advisable. In the case of JSON-like output, use double curly brackets to escape them in order
 to use them in the JSON example.
 
-### How forcing response format works under the hood?
+## How forcing response format works under the hood?
 To force the model to provide output in a desired format, under the hood `llm-wrapper` automatically adds a description
 of the desired output format. For example, for the `ReviewOutputDataModel` the description looks like this:
 ````text

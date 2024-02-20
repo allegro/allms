@@ -1,11 +1,3 @@
----
-layout: default
-title: AzureLlama2Model
-parent: Models
-grand_parent: API
-nav_order: 3
----
-
 ## `class llm_wrapper.models.AzureLlama2Model` API
 ### Methods
 ```python

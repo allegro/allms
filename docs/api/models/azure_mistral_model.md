@@ -1,11 +1,3 @@
----
-layout: default
-title: AzureMistralModel
-parent: Models
-grand_parent: API
-nav_order: 5
----
-
 ## `class llm_wrapper.models.AzureMistralModel` API
 ### Methods
 ```python
