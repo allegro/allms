@@ -1,3 +1,6 @@
+export TWINE_USERNAME?=__token__
+export TWINE_PASSWORD?=your_token
+
 install-poetry::
 	python3 -m pip install pip --upgrade
 	python3 -m pip install poetry==1.5.0
@@ -14,6 +17,8 @@ linter::
 tests::
 	poetry run python -m pytest -s --verbose
 
+publish::
+    poetry run python -m twine upload --verbose dist/*
 
 docs::
 	poetry run mkdocs build
