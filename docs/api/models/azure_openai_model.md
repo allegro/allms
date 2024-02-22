@@ -2,6 +2,7 @@
 ### Methods
 ```python
 __init__(
+    config: AzureOpenAIConfiguration,
     temperature: float = 0.0,
     max_output_tokens: int = 512,
     request_timeout_s: int = 60,
@@ -11,6 +12,7 @@ __init__(
 )
 ```
 #### Parameters
+- `config` (`AzureOpenAIConfiguration`): An instance of `AzureOpenAIConfiguration` class
 - `temperature` (`float`): The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more
    random, while lower values like 0.2 will make it more focused and deterministic. Default: `0.0`.
 - `max_output_tokens` (`int`): The maximum number of tokens to generate by the model. The total length of input tokens 
@@ -26,12 +28,14 @@ __init__(
 ```python
 generate(
     prompt: str,
+    system_prompt: Optional[str] = None,
     input_data: typing.Optional[typing.List[InputData]] = None,
     output_data_model_class: typing.Optional[typing.Type[BaseModel]] = None
 ) -> typing.List[ResponseData]:
 ```
 #### Parameters
 - `prompt` (`str`): Prompt to use to query the model.
+- `system_prompt` (`Optional[str]`): System prompt that will be used by the model.
 - `input_data` (`Optional[List[InputData]]`): If prompt contains symbolic variables you can use this parameter to
    generate model responses for batch of examples. Each symbolic variable from the prompt should have mapping provided
    in the `input_mappings` of `InputData`.
@@ -45,32 +49,30 @@ is not provided, the length of this list is equal 1, and the first element is th
 ---
 
 ```python
-AzureOpenAIModel.setup_environment(
-    openai_api_key: str,
-    openai_api_base: str,
-    openai_api_version: str,
-    openai_api_deployment_name: str,
-    openai_api_type: str = "azure",
-    model_name: str = "gpt-3.5-turbo",
+AzureOpenAIConfiguration(
+    api_key: str,
+    base_url: str,
+    api_version: str,
+    deployment: str,
+    model_name: str
 )
 ```
 Sets up the environment for the `AzureOpenAIModel` model.
 #### Parameters
-- `openai_api_key` (`str`):  The API key for your Azure OpenAI resource. You can find this in the Azure portal under
+- `api_key` (`str`):  The API key for your Azure OpenAI resource. You can find this in the Azure portal under
    your Azure OpenAI resource.
-- `openai_api_base` (`str`): The base URL for your Azure OpenAI resource. You can find this in the Azure portal under
+- `base_url` (`str`): The base URL for your Azure OpenAI resource. You can find this in the Azure portal under
    your Azure OpenAI resource. 
-- `openai_api_version` (`str`): The API version.
-- `openai_api_deployment_name` (`str`): The name under which the model was deployed.
-- `openai_api_type` (`str`): Default: `"azure"`.
-- `model_name` (`str`): Model name to use. Default: `"gpt-3.5-turbo"`.
+- `api_version` (`str`): The API version (for example: `2023-03-15-preview`)
+- `deployment` (`str`): The name under which the model was deployed.
+- `model_name` (`str`): Model name to use (for example: `{gpt-3.5-turbo, gpt-4}`)
 
 ---
 
 ### Example usage
 ```python
 from llm_wrapper.models import AzureOpenAIModel
-from llm_wrapped.domain.configuration import AzureOpenAIConfiguration
+from llm_wrapper.domain.configuration import AzureOpenAIConfiguration
 
 configuration = AzureOpenAIConfiguration(
     api_key="<OPENAI_API_KEY>",

@@ -2,6 +2,7 @@
 ### Methods
 ```python
 __init__(
+    config: AzureSelfDeployedConfiguration,
     temperature: float = 0.0,
     top_p: float = 1.0,
     max_output_tokens: int = 1024,
@@ -11,6 +12,7 @@ __init__(
 )
 ```
 #### Parameters
+- `config` (`AzureSelfDeployedConfiguration`): an instance of `AzureSelfDeployedConfiguration` class
 - `temperature` (`float`): The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more
    random, while lower values like 0.2 will make it more focused and deterministic. Default: `0.0`.
 - `top_p` (`float`): Default: `1.0`.
@@ -26,12 +28,14 @@ __init__(
 ```python
 generate(
     prompt: str,
+    system_prompt: Optional[str] = None,
     input_data: typing.Optional[typing.List[InputData]] = None,
     output_data_model_class: typing.Optional[typing.Type[BaseModel]] = None
 ) -> typing.List[ResponseData]:
 ```
 #### Parameters
 - `prompt` (`str`): Prompt to use to query the model.
+- `system_prompt` (`Optional[str]`): System prompt that will be used by the model.
 - `input_data` (`Optional[List[InputData]]`): If prompt contains symbolic variables you can use this parameter to
    generate model responses for batch of examples. Each symbolic variable from the prompt should have mapping provided
    in the `input_mappings` of `InputData`.
@@ -45,16 +49,16 @@ is not provided, the length of this list is equal 1, and the first element is th
 ---
 
 ```python
-AzureMistralModel.setup_environment(
-    azure_api_key: str,
-    azure_endpoint_url: str,
-    azure_deployment_name: str
+AzureSelfDeployedConfiguration(
+    api_key: str,
+    endpoint_url: str,
+    deployment: str
 )
 ```
 #### Parameters
-- `azure_api_key` (`str`): Authentication key for the endpoint.
-- `azure_endpoint_url` (`str`): URL of pre-existing endpoint.
-- `azure_deployment_name` (`str`): The name under which the model was deployed.
+- `api_key` (`str`): Authentication key for the endpoint.
+- `endpoint_url` (`str`): URL of pre-existing endpoint.
+- `deployment` (`str`): The name under which the model was deployed.
 
 ---
 
