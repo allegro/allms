@@ -28,19 +28,19 @@ __init__(
 ```python
 generate(
     prompt: str,
-    system_prompt: Optional[str] = None,
     input_data: typing.Optional[typing.List[InputData]] = None,
     output_data_model_class: typing.Optional[typing.Type[BaseModel]] = None
 ) -> typing.List[ResponseData]:
 ```
 #### Parameters
 - `prompt` (`str`): Prompt to use to query the model.
-- `system_prompt` (`Optional[str]`): System prompt that will be used by the model.
 - `input_data` (`Optional[List[InputData]]`): If prompt contains symbolic variables you can use this parameter to
    generate model responses for batch of examples. Each symbolic variable from the prompt should have mapping provided
    in the `input_mappings` of `InputData`.
 - `output_data_model_class` (`Optional[Type[BaseModel]]`): If provided forces the model to generate output in the
   format defined by the passed class. Generated response is automatically parsed to this class.
+
+Note that Mistral-based models currently don't support system prompts.
 
 #### Returns
 `List[ResponseData]`: Each `ResponseData` contains the response for a single example from `input_data`. If `input_data`
