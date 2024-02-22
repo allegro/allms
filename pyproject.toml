@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "llm-wrapper"
+name = "llm-wrapper-allegro"
 version = "0.0.1.1"
 description = ""
 authors = ["Allegro Opensource <opensource@allegro.com>"]
