@@ -73,6 +73,6 @@ configuration = AzureSelfDeployedConfiguration(
     deployment="<AZURE_DEPLOYMENT_NAME>"
 )
 
-mistral_model = AzureMistralAIModel(config=configuration)
+mistral_model = AzureMistralModel(config=configuration)
 mistral_response = mistral_model.generate("2+2 is?")
 ```
