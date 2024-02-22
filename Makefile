@@ -18,7 +18,7 @@ tests::
 	poetry run python -m pytest -s --verbose
 
 publish::
-    poetry run python -m twine upload --verbose dist/*
+	poetry run python -m twine upload --verbose dist/*
 
 docs::
 	poetry run mkdocs build
