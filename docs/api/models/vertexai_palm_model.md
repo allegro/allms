@@ -2,6 +2,7 @@
 ### Methods
 ```python
 __init__(
+    config: VertexAIConfiguration,
     temperature: float = 0.0,
     top_k: int = 40,
     top_p: float = 0.95,
@@ -13,6 +14,7 @@ __init__(
 )
 ```
 #### Parameters
+- `config` (`VertexAIConfiguration`): An instance of `VertexAIConfiguration` class
 - `temperature` (`float`): The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more
    random, while lower values like 0.2 will make it more focused and deterministic. Default: `0.0`.
 - `top_k` (`int`): Changes how the model selects tokens for output. A top-k of 3 means that the next token is selected
@@ -31,12 +33,14 @@ __init__(
 ```python
 generate(
     prompt: str,
+    system_prompt: Optional[str] = None,
     input_data: typing.Optional[typing.List[InputData]] = None,
     output_data_model_class: typing.Optional[typing.Type[BaseModel]] = None
 ) -> typing.List[ResponseData]:
 ```
 #### Parameters
 - `prompt` (`str`): Prompt to use to query the model.
+- `system_prompt` (`Optional[str]`): System prompt that will be used by the model.
 - `input_data` (`Optional[List[InputData]]`): If prompt contains symbolic variables you can use this parameter to
    generate model responses for batch of examples. Each symbolic variable from the prompt should have mapping provided
    in the `input_mappings` of `InputData`.
@@ -50,16 +54,14 @@ is not provided, the length of this list is equal 1, and the first element is th
 ---
 
 ```python
-VertexAIPalmModel.setup_environment(
-    gcp_project_id: str,
-    gcp_llm_region: str,
-    gcp_model_name: str = "text-bison@001"
+VertexAIConfiguration(
+    cloud_project: str,
+    cloud_location: str
 )
 ```
 #### Parameters
-- `gcp_project_id` (`str`): The GCP project to use when making Vertex API calls.
-- `gcp_llm_region` (`str`): The region to use when making API calls.
-- `gcp_model_name` (`str`): Default: `"text-bison@001"`.
+- `cloud_project` (`str`): The GCP project to use when making Vertex API calls.
+- `cloud_location` (`str`): The region to use when making API calls.
 
 ---
 
