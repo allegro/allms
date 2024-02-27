@@ -2,8 +2,8 @@ import re
 
 import pandas as pd
 
-from llm_wrapper.domain.prompt_dto import KeywordsOutputClass
-from llm_wrapper.utils import io_utils
+from allms.domain.prompt_dto import KeywordsOutputClass
+from allms.utils import io_utils
 from tests.conftest import AzureOpenAIEnv
 
 

@@ -1,4 +1,4 @@
-## `class llm_wrapper.models.AzureOpenAIModel` API
+## `class allms.models.AzureOpenAIModel` API
 ### Methods
 ```python
 __init__(
@@ -48,6 +48,7 @@ is not provided, the length of this list is equal 1, and the first element is th
 
 ---
 
+## `class allms.domain.configuration.AzureOpenAIConfiguration` API
 ```python
 AzureOpenAIConfiguration(
     api_key: str,
@@ -70,9 +71,10 @@ Sets up the environment for the `AzureOpenAIModel` model.
 ---
 
 ### Example usage
+
 ```python
-from llm_wrapper.models import AzureOpenAIModel
-from llm_wrapper.domain.configuration import AzureOpenAIConfiguration
+from allms.models import AzureOpenAIModel
+from allms.domain.configuration import AzureOpenAIConfiguration
 
 configuration = AzureOpenAIConfiguration(
     api_key="<OPENAI_API_KEY>",

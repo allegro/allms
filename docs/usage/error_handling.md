@@ -2,7 +2,7 @@
 
 ## Too long prompt
 Each LLM has its own context size defined. This is the maximum number of input plus output tokens that the model is able
-to consume. `llm-wrapper` before sending the request to the model automatically checks if your input data will fit into
+to consume. `allms` before sending the request to the model automatically checks if your input data will fit into
 the model's context size and if not it'll either:
 - raise `ValueError` saying that your prompt is too long if the prompt alone has already more tokens than the allowed
   maximum context size of the model
@@ -24,14 +24,14 @@ split the whole input into shorter chunks, process them separately and combine t
 
 ## Output parsing errors
 If you use the [Forcing model response format](forcing_response_format.md) functionality, sometimes the model can 
-generate a response that actually doesn't comform to the provided output data schema. In this case, `llm-wrapper` won't
+generate a response that actually doesn't comform to the provided output data schema. In this case, `allms` won't
 be able to parse the output to the provided output data model class. So as a response you'll get a `ResponseData` where
 `ResponseData.response` will be a raw, unparsed response from the model, and the `ResponseData.error` will be
 `OutputParserException`.
 
 
 ## API errors
-`llm-wrapper` automatically retries failed requests. But even with this feature, the model can fail to return a response
+`allms` automatically retries failed requests. But even with this feature, the model can fail to return a response
 more times than the maximum number of retries (which is currently set to 8) or some other unexpected errors may occur.
 In all of these cases, `ResponseData.error` will contain the exception that occurred. So a good rule of thumb is to 
 first check the `ResponseData.error` and only if it's empty move to processing the response of the model.

@@ -3,10 +3,10 @@ from typing import Optional
 
 from langchain.chat_models import AzureChatOpenAI
 
-from llm_wrapper.defaults.azure_defaults import AzureGptTurboDefaults
-from llm_wrapper.defaults.general_defaults import GeneralDefaults
-from llm_wrapper.domain.configuration import AzureOpenAIConfiguration
-from llm_wrapper.models.abstract import AbstractModel
+from allms.defaults.azure_defaults import AzureGptTurboDefaults
+from allms.defaults.general_defaults import GeneralDefaults
+from allms.domain.configuration import AzureOpenAIConfiguration
+from allms.models.abstract import AbstractModel
 
 
 class AzureOpenAIModel(AbstractModel):

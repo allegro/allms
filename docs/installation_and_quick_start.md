@@ -2,7 +2,7 @@
 Install the package via pip:
 
 ```bash
-pip install llm-wrapper
+pip install allms
 ```
 
 # Quick Start 
@@ -16,8 +16,8 @@ that must be passed in the corresponding configuration object. Below is a brief 
 ### Azure GPT
 
 ```python
-from llm_wrapper.models import AzureOpenAIModel
-from llm_wrapper.domain.configuration import AzureOpenAIConfiguration
+from allms.models import AzureOpenAIModel
+from allms.domain.configuration import AzureOpenAIConfiguration
 
 configuration = AzureOpenAIConfiguration(
     api_key="<OPENAI_API_KEY>",
@@ -42,8 +42,8 @@ gpt_response = gpt_model.generate("2+2 is?")
 ### Google PaLM
 
 ```python
-from llm_wrapper.models import VertexAIPalmModel 
-from llm_wrapper.domain.configuration import VertexAIConfiguration
+from allms.models import VertexAIPalmModel
+from allms.domain.configuration import VertexAIConfiguration
 
 configuration = VertexAIConfiguration(
     cloud_project="<GCP_PROJECT_ID>",
@@ -60,8 +60,8 @@ palm_response = palm_model.generate("2+2 is?")
 ### Google Gemini
 
 ```python
-from llm_wrapper.models import VertexAIGeminiModel 
-from llm_wrapper.domain.configuration import VertexAIConfiguration
+from allms.models import VertexAIGeminiModel
+from allms.domain.configuration import VertexAIConfiguration
 
 configuration = VertexAIConfiguration(
     cloud_project="<GCP_PROJECT_ID>",
@@ -78,8 +78,8 @@ gemini_response = gemini_model.generate("2+2 is?")
 ### Azure LLaMA 2
 
 ```python
-from llm_wrapper.models import AzureLlama2Model 
-from llm_wrapper.domain.configuration import AzureSelfDeployedConfiguration
+from allms.models import AzureLlama2Model
+from allms.domain.configuration import AzureSelfDeployedConfiguration
 
 configuration = AzureSelfDeployedConfiguration(
     api_key="<AZURE_API_KEY>",
@@ -98,8 +98,8 @@ llama_response = llama_model.generate("2+2 is?")
 ### Azure Mistral
 
 ```python
-from llm_wrapper.models.azure_mistral import AzureMistralModel
-from llm_wrapper.domain.configuration import AzureSelfDeployedConfiguration
+from allms.models.azure_mistral import AzureMistralModel
+from allms.domain.configuration import AzureSelfDeployedConfiguration
 
 configuration = AzureSelfDeployedConfiguration(
     api_key="<AZURE_API_KEY>",

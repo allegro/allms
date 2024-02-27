@@ -5,7 +5,7 @@ from langchain_core.callbacks.manager import AsyncCallbackManagerForLLMRun
 from langchain_core.outputs import LLMResult, Generation
 from pydash import chain
 
-from llm_wrapper.constants.vertex_ai import VertexModelConstants
+from allms.constants.vertex_ai import VertexModelConstants
 
 class CustomVertexAI(VertexAI):
     async def _agenerate(

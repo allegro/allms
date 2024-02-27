@@ -12,7 +12,7 @@ build::
 	poetry run python -m build --sdist --wheel .
 
 linter::
-	poetry run pylint llm_wrapper --reports=no --output-format=colorized --fail-under=8.0
+	poetry run pylint allms --reports=no --output-format=colorized --fail-under=8.0
 
 tests::
 	poetry run python -m pytest -s --verbose

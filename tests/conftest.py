@@ -5,10 +5,10 @@ from dataclasses import dataclass
 import pytest
 from aioresponses import aioresponses
 
-from llm_wrapper.domain.configuration import AzureOpenAIConfiguration, AzureSelfDeployedConfiguration, VertexAIConfiguration
-from llm_wrapper.models import AzureOpenAIModel, VertexAIPalmModel, AzureLlama2Model
-from llm_wrapper.models.azure_mistral import AzureMistralModel
-from llm_wrapper.models.vertexai_gemini import VertexAIGeminiModel
+from allms.domain.configuration import AzureOpenAIConfiguration, AzureSelfDeployedConfiguration, VertexAIConfiguration
+from allms.models import AzureOpenAIModel, VertexAIPalmModel, AzureLlama2Model
+from allms.models.azure_mistral import AzureMistralModel
+from allms.models.vertexai_gemini import VertexAIGeminiModel
 
 
 class AzureOpenAIEnv:

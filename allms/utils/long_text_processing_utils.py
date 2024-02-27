@@ -4,7 +4,7 @@ from langchain import BasePromptTemplate
 from langchain.base_language import BaseLanguageModel
 from langchain.schema import Document
 
-from llm_wrapper.defaults.long_text_chain import LongTextChainDefaults
+from allms.defaults.long_text_chain import LongTextChainDefaults
 
 
 def truncate_text_to_max_size(

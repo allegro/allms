@@ -3,14 +3,15 @@
 ## Symbolic Variables and Batch Mode
 
 If you want to generate responses for a batch of examples, you can achieve this by preparing a prompt with symbolic
-variables and providing input data that will be injected into this prompt. `llm-wrapper` will automatically make these
+variables and providing input data that will be injected into this prompt. `allms` will automatically make these
 requests in an async mode and retry them in case of any API error.
 
 Let's say we want to classify reviews of coffee as positive or negative. Here's how to do it:
+
 ```python
-from llm_wrapper.models import AzureOpenAIModel
-from llm_wrapper.domain.configuration import AzureOpenAIConfiguration
-from llm_wrapper.domain.input_data import InputData
+from allms.models import AzureOpenAIModel
+from allms.domain.configuration import AzureOpenAIConfiguration
+from allms.domain.input_data import InputData
 
 configuration = AzureOpenAIConfiguration(
     api_key="<OPENAI_API_KEY>",
@@ -80,7 +81,7 @@ And the results:
 ```
 
 ## Controlling the Number of Concurrent Requests
-As it's written above, `llm-wrapper` automatically makes requests in an async mode. By default, the maximum number of 
+As it's written above, `allms` automatically makes requests in an async mode. By default, the maximum number of 
 concurrent requests is set to 1000. You can control this value by setting the `max_concurrency` parameter when
 initializing the model. Set it to a value that is appropriate for your model endpoint.
 
@@ -91,9 +92,8 @@ a common loop for multiple models or to have a custom loop, it's possible to spe
 ```python
 import asyncio
 
-from llm_wrapper.models import AzureOpenAIModel
-from llm_wrapper.domain.configuration import AzureOpenAIConfiguration
-
+from allms.models import AzureOpenAIModel
+from allms.domain.configuration import AzureOpenAIConfiguration
 
 custom_event_loop = asyncio.new_event_loop()
 
