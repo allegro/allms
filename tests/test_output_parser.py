@@ -3,8 +3,8 @@ from unittest.mock import patch
 
 from langchain.schema import OutputParserException
 
-from llm_wrapper.domain.input_data import InputData
-from llm_wrapper.domain.prompt_dto import SummaryOutputClass, KeywordsOutputClass
+from allms.domain.input_data import InputData
+from allms.domain.prompt_dto import SummaryOutputClass, KeywordsOutputClass
 
 
 class TestOutputModelParserForDifferentModelOutputs:

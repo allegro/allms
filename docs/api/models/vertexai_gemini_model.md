@@ -1,4 +1,4 @@
-## `class llm_wrapper.models.VertexAIGeminiModel` API
+## `class allms.models.VertexAIGeminiModel` API
 ### Methods
 ```python
 __init__(
@@ -53,6 +53,7 @@ is not provided, the length of this list is equal 1, and the first element is th
 
 ---
 
+## `class allms.domain.configuration.VertexAIConfiguration` API
 ```python
 VertexAIConfiguration(
     cloud_project: str,
@@ -66,9 +67,10 @@ VertexAIConfiguration(
 ---
 
 ### Example usage
+
 ```python
-from llm_wrapper.models import VertexAIGeminiModel 
-from llm_wrapper.domain.configuration import VertexAIConfiguration
+from allms.models import VertexAIGeminiModel
+from allms.domain.configuration import VertexAIConfiguration
 
 configuration = VertexAIConfiguration(
     cloud_project="<GCP_PROJECT_ID>",

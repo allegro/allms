@@ -2,7 +2,7 @@ import typing
 
 from pydantic import BaseModel
 
-from llm_wrapper.domain.input_data import InputData
+from allms.domain.input_data import InputData
 
 
 class ResponseData(BaseModel):

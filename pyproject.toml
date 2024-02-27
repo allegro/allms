@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "llm-wrapper"
-version = "0.0.1.1"
+name = "allms"
+version = "0.0.1.1" # TODO: change it to 1.0.0 for the first release
 description = ""
 authors = ["Allegro Opensource <opensource@allegro.com>"]
 readme = "README.md"
-packages = [{include = "llm_wrapper"}]
+packages = [{include = "allms"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"

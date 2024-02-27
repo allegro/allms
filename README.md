@@ -1,16 +1,16 @@
-# llm-wrapper
+# allms
 
 ___
 ## About
 
-llm-wrapper is a versatile and powerful library designed to streamline the process of querying Large Language Models
+allms is a versatile and powerful library designed to streamline the process of querying Large Language Models
 (LLMs) 🤖💬
 
-Developed by the Allegro engineers, llm-wrapper is based on popular libraries like transformers, pydantic, and langchain. It takes care 
+Developed by the Allegro engineers, allms is based on popular libraries like transformers, pydantic, and langchain. It takes care 
 of the boring boiler-plate code you write around your LLM applications, quickly enabling you to prototype ideas, and eventually helping you to scale up 
 for production use-cases!
 
-Among the llm-wrapper most notable features, you will find:
+Among the allms most notable features, you will find:
 
 * **😊 Simple and User-Friendly Interface**: The module offers an intuitive and easy-to-use interface, making it straightforward to work with the model.
 
@@ -28,7 +28,7 @@ ___
 
 Full documentation available at **[llm-wrapper.allegro.tech](https://llm-wrapper.allegro.tech/)**
 
-Get familiar with llm-wrapper 🚀: [introductory jupyter notebook](https://github.com/allegro/llm-wrapper/blob/main/examples/introduction.ipynb)
+Get familiar with allms 🚀: [introductory jupyter notebook](https://github.com/allegro/allms/blob/main/examples/introduction.ipynb)
 
 ___
 
@@ -39,7 +39,7 @@ ___
 Install the package via pip:
 
 ```
-pip install llm-wrapper
+pip install allms
 ```
 
 ### Basic Usage ⭐
@@ -47,15 +47,15 @@ pip install llm-wrapper
 Configure endpoint credentials and start querying the model with any prompt:
 
 ```python
-from llm_wrapper.models import AzureOpenAIModel
-from llm_wrapper.domain.configuration import AzureOpenAIConfiguration
+from allms.models import AzureOpenAIModel
+from allms.domain.configuration import AzureOpenAIConfiguration
 
 configuration = AzureOpenAIConfiguration(
-    api_key="your-secret-api-key",
-    base_url="https://endpoint.openai.azure.com/",
-    api_version="2023-03-15-preview",
-    deployment="gpt-35-turbo",
-    model_name="gpt-3.5-turbo"
+   api_key="your-secret-api-key",
+   base_url="https://endpoint.openai.azure.com/",
+   api_version="2023-03-15-preview",
+   deployment="gpt-35-turbo",
+   model_name="gpt-3.5-turbo"
 )
 
 gpt_model = AzureOpenAIModel(config=configuration)
@@ -102,7 +102,7 @@ responses = model.generate(prompt=prompt, input_data=input_data)
 
 ### Forcing Structured Output Format
 
-Through pydantic integration, in llm-wrapper you can pass an output dataclass and force the LLM to provide
+Through pydantic integration, in allms you can pass an output dataclass and force the LLM to provide
 you the response in a structured way.
 
 ```python
@@ -151,7 +151,7 @@ ___
 
 We assume that you have python `3.10.*` installed on your machine. 
 You can set it up using [pyenv](https://github.com/pyenv/pyenv#installationbrew) 
-([How to install pyenv on MacOS](https://jordanthomasg.medium.com/python-development-on-macos-with-pyenv-2509c694a808)). To install llm-wrapper env locally:
+([How to install pyenv on MacOS](https://jordanthomasg.medium.com/python-development-on-macos-with-pyenv-2509c694a808)). To install allms env locally:
 
 * Activate your pyenv;
 * Install Poetry via:
@@ -160,7 +160,7 @@ You can set it up using [pyenv](https://github.com/pyenv/pyenv#installationbrew)
 make install-poetry
 ```
 
-* Install llm-wrapper dependencies with the command:
+* Install allms dependencies with the command:
 
 ```bash
 make install-env
@@ -189,7 +189,7 @@ via the github action `.github/workflows/docs.yml`
 
 ### Make a new release
 
-When a new version of llm-wrapper is ready to be released, do the following operations:
+When a new version of allms is ready to be released, do the following operations:
 
 1. **Merge to master** the dev branch in which the new version has been specified:
     1. In this branch, `version` under `[tool.poetry]` section in `pyproject.toml` should be updated, e.g `0.1.0`;
@@ -207,5 +207,5 @@ When a new version of llm-wrapper is ready to be released, do the following oper
     1. Go to _Releases_ → _Draft a new release_;
     2. Select the recently created tag in _Choose a tag_ window;
     3. Copy/paste all the content present in the CHANGELOG under the version you are about to release;
-    4. Upload `llm_wrapper-<NEW-VERSION>.whl` and `llm_wrapper-<NEW-VERSION>.tar.gz` as assets;
+    4. Upload `allms-<NEW-VERSION>.whl` and `allms-<NEW-VERSION>.tar.gz` as assets;
     5. Click `Publish release`.

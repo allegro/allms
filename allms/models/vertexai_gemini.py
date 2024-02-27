@@ -2,11 +2,11 @@ from asyncio import AbstractEventLoop
 from langchain_community.llms.vertexai import VertexAI
 from typing import Optional
 
-from llm_wrapper.defaults.general_defaults import GeneralDefaults
-from llm_wrapper.defaults.vertex_ai import GeminiModelDefaults
-from llm_wrapper.domain.configuration import VertexAIConfiguration
-from llm_wrapper.models.vertexai_base import CustomVertexAI
-from llm_wrapper.models.abstract import AbstractModel
+from allms.defaults.general_defaults import GeneralDefaults
+from allms.defaults.vertex_ai import GeminiModelDefaults
+from allms.domain.configuration import VertexAIConfiguration
+from allms.models.vertexai_base import CustomVertexAI
+from allms.models.abstract import AbstractModel
 
 
 class VertexAIGeminiModel(AbstractModel):

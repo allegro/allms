@@ -17,21 +17,21 @@ from langchain.output_parsers import PydanticOutputParser
 from langchain.schema import OutputParserException
 from pydantic import BaseModel
 
-from llm_wrapper.chains.long_text_processing_chain import (
+from allms.chains.long_text_processing_chain import (
     LongTextProcessingChain,
     load_long_text_processing_chain
 )
-from llm_wrapper.constants.input_data import IODataConstants
-from llm_wrapper.constants.prompt import PromptConstants
-from llm_wrapper.defaults.general_defaults import GeneralDefaults
-from llm_wrapper.domain.enumerables import AggregationLogicForLongInputData, LanguageModelTask
+from allms.constants.input_data import IODataConstants
+from allms.constants.prompt import PromptConstants
+from allms.defaults.general_defaults import GeneralDefaults
+from allms.domain.enumerables import AggregationLogicForLongInputData, LanguageModelTask
 
-from llm_wrapper.defaults.long_text_chain import LongTextChainDefaults
-from llm_wrapper.domain.input_data import InputData
-from llm_wrapper.domain.prompt_dto import SummaryOutputClass, KeywordsOutputClass
-from llm_wrapper.domain.response import ResponseData
-import llm_wrapper.exceptions.validation_input_data_exceptions as input_exception_message
-from llm_wrapper.utils.long_text_processing_utils import get_max_allowed_number_of_tokens
+from allms.defaults.long_text_chain import LongTextChainDefaults
+from allms.domain.input_data import InputData
+from allms.domain.prompt_dto import SummaryOutputClass, KeywordsOutputClass
+from allms.domain.response import ResponseData
+import allms.exceptions.validation_input_data_exceptions as input_exception_message
+from allms.utils.long_text_processing_utils import get_max_allowed_number_of_tokens
 
 logger = logging.getLogger(__name__)
 

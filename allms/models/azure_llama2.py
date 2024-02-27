@@ -1,11 +1,11 @@
 import typing
 from asyncio import AbstractEventLoop
 
-from llm_wrapper.defaults.azure_defaults import AzureLlama2Defaults
-from llm_wrapper.defaults.general_defaults import GeneralDefaults
-from llm_wrapper.domain.configuration import AzureSelfDeployedConfiguration
-from llm_wrapper.models.abstract import AbstractModel
-from llm_wrapper.models.azure_base import AzureMLOnlineEndpointAsync, ChatModelContentFormatter
+from allms.defaults.azure_defaults import AzureLlama2Defaults
+from allms.defaults.general_defaults import GeneralDefaults
+from allms.domain.configuration import AzureSelfDeployedConfiguration
+from allms.models.abstract import AbstractModel
+from allms.models.azure_base import AzureMLOnlineEndpointAsync, ChatModelContentFormatter
 
 
 class AzureLlama2Model(AbstractModel):

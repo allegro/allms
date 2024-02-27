@@ -5,8 +5,8 @@ from typing import List, Optional, Union
 import fsspec
 import pandas as pd
 
-from llm_wrapper.constants.input_data import IODataConstants
-from llm_wrapper.domain.input_data import InputData
+from allms.constants.input_data import IODataConstants
+from allms.domain.input_data import InputData
 
 logger = logging.getLogger(__name__)
 

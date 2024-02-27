@@ -1,8 +1,8 @@
 
 # Frequently Asked Questions
 
-### 1. How to use the llm-wrapper in a python notebook?
-When using the `llm-wrapper` library, which utilizes asynchronous programming under the hood, you must install the `nest-asyncio` library to use it in a Jupyter notebook environment.
+### 1. How to use the allms in a python notebook?
+When using the `allms` library, which utilizes asynchronous programming under the hood, you must install the `nest-asyncio` library to use it in a Jupyter notebook environment.
 
 To ensure proper functionality, execute the following code at the beginning of your notebook:
 ```jupyterpython

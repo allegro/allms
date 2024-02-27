@@ -1,4 +1,4 @@
-site_name: llm-wrapper
+site_name: allms
 theme: readthedocs
 nav:
   - Introduction: index.md

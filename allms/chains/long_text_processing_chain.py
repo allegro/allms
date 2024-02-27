@@ -7,10 +7,10 @@ from langchain.base_language import BaseLanguageModel
 from langchain.chains.combine_documents.base import BaseCombineDocumentsChain
 from langchain.schema import Document
 
-from llm_wrapper.domain.enumerables import AggregationLogicForLongInputData, LanguageModelTask
-from llm_wrapper.domain.input_data import InputData
-from llm_wrapper.domain.prompt_dto import AggregateOutputClass, KeywordsOutputClass, SummaryOutputClass
-from llm_wrapper.utils.long_text_processing_utils import split_text_to_max_size
+from allms.domain.enumerables import AggregationLogicForLongInputData, LanguageModelTask
+from allms.domain.input_data import InputData
+from allms.domain.prompt_dto import AggregateOutputClass, KeywordsOutputClass, SummaryOutputClass
+from allms.utils.long_text_processing_utils import split_text_to_max_size
 
 
 class LongTextProcessingChain(BaseCombineDocumentsChain):

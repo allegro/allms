@@ -1,4 +1,4 @@
-## `class llm_wrapper.models.AzureLlama2Model` API
+## `class allms.models.AzureLlama2Model` API
 ### Methods
 ```python
 __init__(
@@ -48,6 +48,7 @@ is not provided, the length of this list is equal 1, and the first element is th
 
 ---
 
+## `class allms.domain.configuration.AzureSelfDeployedConfiguration` API
 ```python
 AzureSelfDeployedConfiguration(
     api_key: str,
@@ -63,9 +64,10 @@ AzureSelfDeployedConfiguration(
 ---
 
 ### Example usage
+
 ```python
-from llm_wrapper.models import AzureLlama2Model 
-from llm_wrapper.domain.configuration import AzureSelfDeployedConfiguration
+from allms.models import AzureLlama2Model
+from allms.domain.configuration import AzureSelfDeployedConfiguration
 
 configuration = AzureSelfDeployedConfiguration(
     api_key="<AZURE_API_KEY>",

@@ -1,12 +1,12 @@
 import logging
 
-import llm_wrapper.exceptions.validation_input_data_exceptions as input_validation_messages
+import allms.exceptions.validation_input_data_exceptions as input_validation_messages
 from unittest.mock import patch
 
 import pytest
 
-from llm_wrapper.domain.input_data import InputData
-from llm_wrapper.domain.response import ResponseData
+from allms.domain.input_data import InputData
+from allms.domain.response import ResponseData
 
 
 class TestModelBehaviorForDifferentInput:

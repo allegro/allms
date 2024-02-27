@@ -1,4 +1,4 @@
-## `class llm_wrapper.domain.input_data.InputData` dataclass
+## `class allms.domain.input_data.InputData` dataclass
 ```python
 @dataclass
 class InputData:
@@ -12,7 +12,7 @@ class InputData:
 - `id` (`str`): Unique identifier. Requests are done in an async mode, so the order of the responses is not the same
    as the order of the input data, so this field can be used to identify them.
 
-## `class llm_wrapper.domain.response.ResponseData` dataclass
+## `class allms.domain.response.ResponseData` dataclass
 ```python
 @dataclass
 class ResponseData:

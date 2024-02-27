@@ -20,9 +20,9 @@ jobs:
         run: make install-poetry
       - name: Install dependencies
         run: make install-env
-      - name: Build llm-wrapper package
+      - name: Build allms package
         run: make build
-      - name: Publish llm-wrapper package to PyPI
+      - name: Publish allms package to PyPI
         env:
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
         run: |

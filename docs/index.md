@@ -4,7 +4,7 @@
 
 # Introduction
 
-`llm-wrapper` is a versatile and powerful library designed to streamline the process of querying large language models, offering a user-friendly experience.  The `llm-wrapper` module is designed to simplify interactions with the underlying model by providing the following features:
+`allms` is a versatile and powerful library designed to streamline the process of querying large language models, offering a user-friendly experience.  The `allms` module is designed to simplify interactions with the underlying model by providing the following features:
 
 - **Simple and User-Friendly Interface**: The module offers an intuitive and easy-to-use interface, making it straightforward to work with the model.
 

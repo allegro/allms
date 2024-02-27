@@ -2,7 +2,7 @@
 
 ## Pydantic BaseModels Integration
 
-If you want to force the model to output the response in a given JSON schema, `llm-wrapper` provides an easy way to do 
+If you want to force the model to output the response in a given JSON schema, `allms` provides an easy way to do 
 it. You just need to provide a data model that describes the desired output format and the package does all the rest. 
 As an output you get string already parsed to a provided data model class.
 
@@ -25,7 +25,7 @@ class ReviewOutputDataModel(BaseModel):
     cons: typing.List[str] = Field(description="List of cons of the coffee")
 ```
 
-2. Provide the data model class together with prompt and input data to the `.generate()` method. `llm-wrapper` will 
+2. Provide the data model class together with prompt and input data to the `.generate()` method. `allms` will 
 automatically force the model to output the data in the provided format and will parse the string returned from the
 model to the provided data model class.
 
@@ -75,7 +75,7 @@ few-shot learning techniques is also advisable. In the case of JSON-like output,
 to use them in the JSON example.
 
 ## How forcing response format works under the hood?
-To force the model to provide output in a desired format, under the hood `llm-wrapper` automatically adds a description
+To force the model to provide output in a desired format, under the hood `allms` automatically adds a description
 of the desired output format. For example, for the `ReviewOutputDataModel` the description looks like this:
 
 ````text
