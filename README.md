@@ -26,7 +26,7 @@ ___
 
 ## Documentation
 
-Full documentation available at **[llm-wrapper.allegro.tech](https://llm-wrapper.allegro.tech/)**
+Full documentation available at **[allms.allegro.tech](https://allms.allegro.tech/)**
 
 Get familiar with allms 🚀: [introductory jupyter notebook](https://github.com/allegro/allms/blob/main/examples/introduction.ipynb)
 
