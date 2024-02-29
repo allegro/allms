@@ -22,3 +22,11 @@ def get_different_input_keys_message(example_id: str) -> str:
 
 def get_prompt_contains_input_key_when_missing_input_data() -> str:
     return f"When no input_data is provided prompt cannot contain any input_key."
+
+
+def get_system_prompt_contains_input_variables() -> str:
+    return "System prompt cannot contain any input variables. Please fix your system message and try again."
+
+
+def get_system_prompt_is_not_supported_by_model() -> str:
+    return "Mistral-based models don't support `system_prompt` parameter."

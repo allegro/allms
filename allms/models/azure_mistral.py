@@ -1,11 +1,13 @@
 import typing
 from asyncio import AbstractEventLoop
 
+from langchain_community.chat_models.azureml_endpoint import LlamaChatContentFormatter
+
 from allms.defaults.azure_defaults import AzureMistralAIDefaults
 from allms.defaults.general_defaults import GeneralDefaults
 from allms.domain.configuration import AzureSelfDeployedConfiguration
 from allms.models.abstract import AbstractModel
-from allms.models.azure_base import AzureMLOnlineEndpointAsync, ChatModelContentFormatter
+from allms.models.azure_base import AzureMLOnlineEndpointAsync
 
 
 class AzureMistralModel(AbstractModel):
@@ -46,6 +48,6 @@ class AzureMistralModel(AbstractModel):
             endpoint_api_key=self._config.api_key,
             endpoint_url=self._config.endpoint_url,
             model_kwargs=model_kwargs,
-            content_formatter=ChatModelContentFormatter(),
+            content_formatter=LlamaChatContentFormatter(),
             deployment_name=self._config.deployment
         )

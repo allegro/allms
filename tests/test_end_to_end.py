@@ -16,14 +16,14 @@ class TestEndToEnd:
     ):
         # GIVEN
         mock_aioresponse.post(
-            url=re.compile(f"^{AzureOpenAIEnv.OPENAI_API_BASE}.*$"), 
+            url=re.compile(f"^{AzureOpenAIEnv.OPENAI_API_BASE}.*$"),
             payload={
                 "choices": [{
                     "message": {
-                        "content": "{\"keywords\": [\"Indywidualna racja żywnościowa\", \"wojskowa\", \"S-R-9\", \"set nr 9\", \"Makaron po bolońsku\", \"Konserwa tyrolska\", \"Suchary\", \"Koncentrat napoju herbacianego instant o smaku owoców leśnych\", \"Dżem malinowy\", \"Baton zbożowo-owocowy o smaku figowym\"]}", 
+                        "content": "{\"keywords\": [\"Indywidualna racja żywnościowa\", \"wojskowa\", \"S-R-9\", \"set nr 9\", \"Makaron po bolońsku\", \"Konserwa tyrolska\", \"Suchary\", \"Koncentrat napoju herbacianego instant o smaku owoców leśnych\", \"Dżem malinowy\", \"Baton zbożowo-owocowy o smaku figowym\"]}",
                         "role": ""
                     }
-                }], 
+                }],
                 "usage": {}
             },
             repeat=True
@@ -34,7 +34,7 @@ class TestEndToEnd:
             path="./tests/resources/test_input_data.csv"
         )
         prompt_template_text = """Extract at most 10 keywords that could be used as features in a search index from this Polish product description.
-        
+
         {text}
         """
 
@@ -42,7 +42,8 @@ class TestEndToEnd:
         parsed_responses = models["azure_open_ai"].generate(
             prompt=prompt_template_text,
             input_data=input_data,
-            output_data_model_class=KeywordsOutputClass
+            output_data_model_class=KeywordsOutputClass,
+            system_prompt="This is a system prompt."
         )
         parsed_responses = sorted(parsed_responses, key=lambda key: key.input_data.id)
 
@@ -66,25 +67,25 @@ class TestEndToEnd:
 
         assert expected_output["number_of_generated_tokens"].values.tolist() == list(
             map(lambda example: example.number_of_generated_tokens, parsed_responses))
-        
+
     def test_model_times_out(
-        self,
-        mock_aioresponse,
-        models
+            self,
+            mock_aioresponse,
+            models
     ):
         # GIVEN
         mock_aioresponse.post(
-            url=re.compile(f"^{AzureOpenAIEnv.OPENAI_API_BASE}.*$"), 
+            url=re.compile(f"^{AzureOpenAIEnv.OPENAI_API_BASE}.*$"),
             exception=TimeoutError("Request timed out!"),
             repeat=True
         )
 
         # WHEN
         responses = models["azure_open_ai"].generate("Some prompt")
-        
-        #THEN
+
+        # THEN
         assert responses[0].response is None
         assert "Request timed out" in responses[0].error
 
-    
+
 

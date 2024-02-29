@@ -12,9 +12,9 @@ from allms.models.vertexai_gemini import VertexAIGeminiModel
 
 
 class AzureOpenAIEnv:
-    OPENAI_API_BASE: str = "https://dummy-endpoint.openai.azure.com/"
-    OPENAI_API_VERSION: str = "dummy-api-version"
-    OPENAI_DEPLOYMENT_NAME: str = "dummy-deployment-name"
+    OPENAI_API_BASE: str = "https://summarization-in-search-france-central.openai.azure.com/"
+    OPENAI_API_VERSION: str = "2023-03-15-preview"
+    OPENAI_DEPLOYMENT_NAME: str = "gpt-35-turbo"
 
 
 @dataclass
