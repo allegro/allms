@@ -8,7 +8,14 @@ from allms.models.azure_openai import AzureOpenAIModel
 from allms.models.vertexai_gemini import VertexAIGeminiModel
 from allms.models.vertexai_palm import VertexAIPalmModel
 
-__all__ = ["AzureOpenAIModel", "AzureLlama2Model", "AzureMistralModel", "VertexAIPalmModel", "VertexAIGeminiModel"]
+__all__ = [
+    "AzureOpenAIModel",
+    "AzureLlama2Model",
+    "AzureMistralModel",
+    "VertexAIPalmModel",
+    "VertexAIGeminiModel",
+    "get_available_models"
+]
 
 
 def get_available_models() -> dict[str, Type[AbstractModel]]:
