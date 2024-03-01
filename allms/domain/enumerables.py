@@ -14,10 +14,11 @@ class AggregationLogicForLongInputData(str, ListConvertableEnum):
 
 
 class AvailableModels(str, ListConvertableEnum):
-    OPENAI_GPT_35_TURBO = "GPT-3.5-TURBO"
-    GOOGLE_PALM = "PALM"
-    GOOGLE_GEMINI = "GEMINI"
-    AZURE_LLAMA2 = "LLAMA2"
+    AZURE_OPENAI_MODEL = "azure_openai"
+    AZURE_LLAMA2_MODEL = "azure_llama2"
+    AZURE_MISTRAL_MODEL = "azure_mistral"
+    VERTEXAI_PALM2_MODEL = "vertexai_palm2"
+    VERTEXAI_GEMINI_MODEL = "vertexai_gemini"
 
 
 class LanguageModelTask(str, ListConvertableEnum):
