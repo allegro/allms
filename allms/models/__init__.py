@@ -26,6 +26,7 @@ def get_available_models() -> dict[str, Type[AbstractModel]]:
         AvailableModels.AZURE_LLAMA2_MODEL: AzureLlama2Model,
         AvailableModels.AZURE_MISTRAL_MODEL: AzureMistralModel,
         AvailableModels.VERTEXAI_PALM2_MODEL: VertexAIPalmModel,
-        AvailableModels.VERTEXAI_GEMINI_MODEL: VertexAIGeminiModel
+        AvailableModels.VERTEXAI_GEMINI_MODEL: VertexAIGeminiModel,
+        AvailableModels.VERTEXAI_GEMMA_MODEL: VertexAIGemmaModel,
     }
 

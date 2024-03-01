@@ -19,6 +19,7 @@ class AvailableModels(str, ListConvertableEnum):
     AZURE_MISTRAL_MODEL = "azure_mistral"
     VERTEXAI_PALM2_MODEL = "vertexai_palm2"
     VERTEXAI_GEMINI_MODEL = "vertexai_gemini"
+    VERTEXAI_GEMMA_MODEL = "vertexai_gemma"
 
 
 class LanguageModelTask(str, ListConvertableEnum):
