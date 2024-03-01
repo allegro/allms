@@ -39,7 +39,7 @@ gpt_response = gpt_model.generate("2+2 is?")
 * `<OPENAI_API_DEPLOYMENT_NAME>`: The name under which the model was deployed.
 * `<OPENAI_API_MODEL_NAME>`: The underlying model's name.
 
-### Google PaLM
+### VertexAI PaLM
 
 ```python
 from allms.models import VertexAIPalmModel
@@ -57,7 +57,7 @@ palm_response = palm_model.generate("2+2 is?")
 * `<GCP_PROJECT_ID>`: The GCP project in which you have access to the PALM model.
 * `<MODEL_REGION>`: The region where the model is deployed.
 
-### Google Gemini
+### VertexAI Gemini
 
 ```python
 from allms.models import VertexAIGeminiModel
@@ -74,6 +74,26 @@ gemini_response = gemini_model.generate("2+2 is?")
 
 * `<GCP_PROJECT_ID>`: The GCP project in which you have access to the PALM model.
 * `<MODEL_REGION>`: The region where the model is deployed.
+
+### VertexAI Gemma
+
+```python
+from allms.models import VertexAIGemmaModel
+from allms.domain.configuration import VertexAIModelGardenConfiguration
+
+configuration = VertexAIModelGardenConfiguration(
+    cloud_project="<GCP_PROJECT_ID>",
+    cloud_location="<MODEL_REGION>",
+    endpoint_id="<ENDPOINT_ID>"
+)
+
+gemini_model = VertexAIGemmaModel(config=configuration)
+gemini_response = gemini_model.generate("2+2 is?")
+```
+
+* `<GCP_PROJECT_ID>`: The GCP project in which you have access to the PALM model.
+* `<MODEL_REGION>`: The region where the model is deployed.
+* `<ENDPOINT_ID>`: ID of an endpoint where the model has been deployed.
 
 ### Azure LLaMA 2
 

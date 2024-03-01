@@ -24,5 +24,5 @@ Currently, the library supports:
 
 * OpenAI models hosted on Microsoft Azure (`gpt-3.5-turbo`, `gpt4`, `gpt4-turbo`);
 * Google Cloud Platform VertexAI models (`PaLM2`, `Gemini`);
-* Open-source models `Llama2` and `Mistral` self-deployed on Azure.
+* Open-source models `Llama2` and `Mistral` self-deployed on Azure and `Gemma` self-deployed on GCP
 
