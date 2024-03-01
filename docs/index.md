@@ -1,5 +1,5 @@
 <p align="center">
-<img src="assets/images/logo.png" alt="LLM-Wrapper Logo"/>
+<img src="assets/images/logo.png" alt="aLLMs Logo"/>
 </p>
 
 # Introduction

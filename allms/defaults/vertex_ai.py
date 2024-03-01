@@ -17,3 +17,13 @@ class GeminiModelDefaults:
     TOP_P = 0.95
     TOP_K = 40
     VERBOSE = True
+
+
+class GemmaModelDefaults:
+    GCP_MODEL_NAME = "gemma"
+    MODEL_TOTAL_MAX_TOKENS = 8192
+    MAX_OUTPUT_TOKENS = 1024
+    TEMPERATURE = 0.0
+    TOP_P = 0.95
+    TOP_K = 40
+    VERBOSE = True

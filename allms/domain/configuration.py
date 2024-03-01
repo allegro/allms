@@ -21,3 +21,8 @@ class AzureSelfDeployedConfiguration:
 class VertexAIConfiguration:
     cloud_project: str
     cloud_location: str
+
+
+@dataclass
+class VertexAIModelGardenConfiguration(VertexAIConfiguration):
+    endpoint_id: str

@@ -1,7 +1,8 @@
-from typing import List, Optional, Any
+from typing import List, Optional, Any, Dict
 
-from langchain_community.llms.vertexai import VertexAI
-from langchain_core.callbacks.manager import AsyncCallbackManagerForLLMRun
+from google.cloud.aiplatform.models import Prediction
+from langchain_community.llms.vertexai import VertexAI, VertexAIModelGarden
+from langchain_core.callbacks import AsyncCallbackManagerForLLMRun
 from langchain_core.outputs import LLMResult, Generation
 from pydash import chain
 
@@ -47,3 +48,56 @@ class CustomVertexAI(VertexAI):
             llm_output=result.llm_output,
             run=result.run
         )
+
+
+class VertexAIModelGardenWrapper(VertexAIModelGarden):
+    temperature: float = 0.0
+    max_tokens: int = 128
+    top_p: float = 0.95
+    top_k: int = 40
+    n: int = 1
+    allowed_model_args: Optional[List[str]] = ["temperature", "max_tokens", "top_p", "top_k", "n"]
+
+    @property
+    def _default_params(self) -> Dict[str, Any]:
+        return {
+            "temperature": self.temperature,
+            "max_tokens": self.max_tokens,
+            "top_k": self.top_k,
+            "top_p": self.top_p,
+            "n": self.n
+        }
+
+    def _parse_response(self, predictions: "Prediction", prompts: List[str]) -> LLMResult:
+        generations: List[List[Generation]] = []
+        for result, prompt in zip(predictions.predictions, prompts):
+            if isinstance(result, str):
+                generations.append([Generation(text=self._parse_prediction(result, prompt))])
+            else:
+                generations.append(
+                    [
+                        Generation(text=self._parse_prediction(prediction, prompt))
+                        for prediction in result
+                    ]
+                )
+        return LLMResult(generations=generations)
+
+    def _parse_prediction(self, prediction: Any, prompt: str) -> str:
+        parsed_prediction = super()._parse_prediction(prediction)
+        text_to_remove = f"Prompt:\n{prompt}\nOutput:\n"
+        return parsed_prediction.rsplit(text_to_remove, maxsplit=1)[1]
+
+    async def _agenerate(
+        self,
+        prompts: List[str],
+        stop: Optional[List[str]] = None,
+        run_manager: Optional[AsyncCallbackManagerForLLMRun] = None,
+        **kwargs: Any,
+    ) -> LLMResult:
+        kwargs = {**kwargs, **self._default_params}
+        instances = self._prepare_request(prompts, **kwargs)
+        response = await self.async_client.predict(
+            endpoint=self.endpoint_path, instances=instances
+        )
+        return self._parse_response(response, prompts)
+
