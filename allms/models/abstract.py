@@ -9,14 +9,18 @@ from functools import partial
 import google
 import openai
 from google.api_core.exceptions import InvalidArgument
-from langchain_core.prompts.prompt import PromptTemplate
 from langchain.chains import LLMChain
 from langchain.chat_models.base import BaseChatModel
-from langchain_core.language_models.llms import create_base_retry_decorator
 from langchain.output_parsers import PydanticOutputParser
+from langchain.prompts import ChatPromptTemplate
 from langchain.schema import OutputParserException
+from langchain_core.language_models.llms import create_base_retry_decorator
+from langchain_core.prompts import HumanMessagePromptTemplate, SystemMessagePromptTemplate
+from langchain_core.prompts.prompt import PromptTemplate
 from pydantic import BaseModel
 
+import allms.exceptions.validation_input_data_exceptions as input_exception_message
+import allms.models as models
 from allms.chains.long_text_processing_chain import (
     LongTextProcessingChain,
     load_long_text_processing_chain
@@ -24,13 +28,11 @@ from allms.chains.long_text_processing_chain import (
 from allms.constants.input_data import IODataConstants
 from allms.constants.prompt import PromptConstants
 from allms.defaults.general_defaults import GeneralDefaults
-from allms.domain.enumerables import AggregationLogicForLongInputData, LanguageModelTask
-
 from allms.defaults.long_text_chain import LongTextChainDefaults
+from allms.domain.enumerables import AggregationLogicForLongInputData, LanguageModelTask
 from allms.domain.input_data import InputData
 from allms.domain.prompt_dto import SummaryOutputClass, KeywordsOutputClass
 from allms.domain.response import ResponseData
-import allms.exceptions.validation_input_data_exceptions as input_exception_message
 from allms.utils.long_text_processing_utils import get_max_allowed_number_of_tokens
 
 logger = logging.getLogger(__name__)
@@ -76,7 +78,7 @@ class AbstractModel(ABC):
     def _create_llm(self) -> BaseChatModel:
         ...
 
-    def _get_prompt_tokens_number(self, prompt: PromptTemplate, input_data: InputData) -> int:
+    def _get_prompt_tokens_number(self, prompt: ChatPromptTemplate, input_data: InputData) -> int:
         return self._llm.get_num_tokens(prompt.format_prompt(**input_data.input_mappings).to_string())
 
     def _get_model_response_tokens_number(self, model_response: typing.Optional[str]) -> int:
@@ -88,13 +90,15 @@ class AbstractModel(ABC):
             self,
             prompt: str,
             input_data: typing.Optional[typing.List[InputData]] = None,
-            output_data_model_class: typing.Optional[typing.Type[BaseModel]] = None
+            output_data_model_class: typing.Optional[typing.Type[BaseModel]] = None,
+            system_prompt: typing.Optional[str] = None
     ) -> typing.List[ResponseData]:
         model_responses = self._event_loop.run_until_complete(
             self._generate(
                 prompt=prompt,
                 input_data=input_data,
-                output_data_model_class=output_data_model_class
+                output_data_model_class=output_data_model_class,
+                system_prompt=system_prompt
             )
         )
 
@@ -109,7 +113,8 @@ class AbstractModel(ABC):
             return None, OutputParserException(
                 f"An OutputParserException has occurred for "
                 f"The response from model: {model_response_data.response}\n"
-                f"The exception message: {output_parser_exception}")
+                f"The exception message: {output_parser_exception}"
+            )
 
     def _parse_model_output(self, model_responses_data: typing.List[ResponseData]) -> typing.List[ResponseData]:
         parsed_responses = []
@@ -134,8 +139,10 @@ class AbstractModel(ABC):
             self,
             prompt: str,
             input_data: typing.Optional[typing.List[InputData]] = None,
-            output_data_model_class: typing.Optional[typing.Type[BaseModel]] = None
+            output_data_model_class: typing.Optional[typing.Type[BaseModel]] = None,
+            system_prompt: typing.Optional[str] = None
     ) -> typing.List[ResponseData]:
+        self._validate_system_prompt(system_prompt=system_prompt)
         self._validate_input(prompt=prompt, input_data=input_data)
         if input_data is None:
             # Prompt without symbolic variables is passed - create input_data accordingly
@@ -153,7 +160,10 @@ class AbstractModel(ABC):
             }
             prompt_template_args[PromptConstants.TEMPLATE_STR] = self._add_output_data_format(prompt=prompt)
 
-        prompt_template = PromptTemplate(**prompt_template_args)
+        chat_prompts = await self._build_chat_prompts(prompt_template_args, system_prompt)
+
+        prompt_template = ChatPromptTemplate.from_messages(chat_prompts)
+
         chain = self._get_chain(prompt_template)
         long_chain = self._get_chain_for_long_text(prompt_template)
 
@@ -170,6 +180,18 @@ class AbstractModel(ABC):
         responses = await asyncio.gather(*results)
 
         return responses
+
+    async def _build_chat_prompts(
+            self,
+            prompt_template_args: dict,
+            system_prompt: SystemMessagePromptTemplate
+    ) -> list[SystemMessagePromptTemplate | HumanMessagePromptTemplate]:
+        human_message = HumanMessagePromptTemplate(prompt=PromptTemplate(**prompt_template_args))
+        if not system_prompt:
+            return [human_message]
+        system_message_template = SystemMessagePromptTemplate.from_template(system_prompt)
+
+        return [system_message_template, human_message]
 
     @staticmethod
     def _add_output_data_format(prompt: str) -> str:
@@ -198,7 +220,7 @@ class AbstractModel(ABC):
     def _predict_example_of_any_length(
             self,
             input_data: InputData,
-            prompt_template: PromptTemplate,
+            prompt_template: ChatPromptTemplate,
             standard_chain: LLMChain,
             long_chain: LLMChain
     ) -> ResponseData:
@@ -302,12 +324,11 @@ class AbstractModel(ABC):
             aggregation_strategy=self._aggregation_strategy
         )
 
-    def _validate_input(self, prompt: str, input_data: typing.Optional[typing.List[InputData]]) -> None:
+    def _validate_input(self, prompt: str, input_data: typing.Optional[typing.List[InputData]] = None) -> None:
         # Extracts text inside the {} but escapes the text inside {{}}
         # This behaviour allows to pass JSON-like strings to the prompt
         # reference: https://github.com/langchain-ai/langchain/issues/1660#issuecomment-1469320129
-        input_variables_pattern = r'(?<!\{)\{([^{}]+)\}(?!\})'
-        prompt_input_variables_set = set(re.findall(input_variables_pattern, prompt))
+        prompt_input_variables_set = AbstractModel._extract_input_variables_from_prompt(prompt)
         if PromptConstants.OUTPUT_DATA_MODEL in prompt_input_variables_set:
             prompt_input_variables_set.remove(PromptConstants.OUTPUT_DATA_MODEL)
 
@@ -317,6 +338,20 @@ class AbstractModel(ABC):
         elif len(prompt_input_variables_set) > 0:
             raise ValueError(
                 input_exception_message.get_prompt_contains_input_key_when_missing_input_data())
+
+    def _validate_system_prompt(self, system_prompt: typing.Optional[str] = None) -> None:
+        if isinstance(self, models.AzureMistralModel) and system_prompt is not None:
+            raise ValueError(input_exception_message.get_system_prompt_is_not_supported_by_model())
+        elif system_prompt:
+            prompt_input_variables_set = AbstractModel._extract_input_variables_from_prompt(system_prompt)
+            if prompt_input_variables_set:
+                raise ValueError(input_exception_message.get_system_prompt_contains_input_variables())
+
+    @staticmethod
+    def _extract_input_variables_from_prompt(prompt: str) -> set[str]:
+        input_variables_pattern = r'(?<!\{)\{([^{}]+)\}(?!\})'
+        input_variables_set = set(re.findall(input_variables_pattern, prompt))
+        return input_variables_set
 
     @staticmethod
     def _validate_input_data(

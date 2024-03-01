@@ -9,7 +9,7 @@ from langchain.schema import Document
 
 from allms.domain.enumerables import AggregationLogicForLongInputData, LanguageModelTask
 from allms.domain.input_data import InputData
-from allms.domain.prompt_dto import AggregateOutputClass, KeywordsOutputClass, SummaryOutputClass
+from allms.domain.prompt_dto import (AggregateOutputClass, KeywordsOutputClass, SummaryOutputClass)
 from allms.utils.long_text_processing_utils import split_text_to_max_size
 
 

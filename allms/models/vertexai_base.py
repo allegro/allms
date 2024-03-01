@@ -7,6 +7,7 @@ from pydash import chain
 
 from allms.constants.vertex_ai import VertexModelConstants
 
+
 class CustomVertexAI(VertexAI):
     async def _agenerate(
         self,

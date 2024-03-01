@@ -7,6 +7,7 @@ import pytest
 
 from allms.domain.input_data import InputData
 from allms.domain.response import ResponseData
+import allms.models as llm_models
 
 
 class TestModelBehaviorForDifferentInput:
@@ -143,3 +144,20 @@ class TestModelBehaviorForDifferentInput:
             assert "Number of prompt tokens plus generated tokens may exceed the the max allowed number of tokens of the model." in log_records[0].message
 
             caplog.clear()
+
+    @patch("langchain.chains.base.Chain.arun")
+    def test_model_raises_exception_when_system_prompt_is_invalid(self, chain_run_mock, models):
+        for model in models.values():
+            chain_run_mock.return_value = "{}"
+
+            prompt = "Some Dummy Prompt without input variable"
+            if isinstance(model, llm_models.AzureMistralModel):
+                with pytest.raises(
+                        ValueError, match=input_validation_messages.get_system_prompt_is_not_supported_by_model()
+                ) as expected_value_exception:
+                    model.generate(prompt, system_prompt="This is a system prompt with {additional} field")
+            else:
+                with pytest.raises(
+                        ValueError, match=input_validation_messages.get_system_prompt_contains_input_variables()
+                ) as expected_value_exception:
+                    model.generate(prompt, system_prompt="This is a system prompt with {additional} field")
