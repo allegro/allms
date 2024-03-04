@@ -1,20 +1,20 @@
-## `class allms.models.VertexAIGeminiModel` API
+## `class allms.models.VertexAIGemmaModel` API
 ### Methods
 ```python
 __init__(
-    config: VertexAIConfiguration,
+    config: VertexAIModelGardenConfiguration,
     temperature: float = 0.0,
     top_k: int = 40,
     top_p: float = 0.95,
-    max_output_tokens: int = 2048,
-    model_total_max_tokens: int = 30720,
+    max_output_tokens: int = 1024,
+    model_total_max_tokens: int = 8192,
     max_concurrency: int = 1000,
     max_retries: int = 8,
     verbose: bool = True
 )
 ```
 #### Parameters
-- `config` (`VertexAIConfiguration`): An instance of `VertexAIConfiguration` class
+- `config` (`VertexAIModelGardenConfiguration`): An instance of `VertexAIModelGardenConfiguration` class
 - `temperature` (`float`): The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more
    random, while lower values like 0.2 will make it more focused and deterministic. Default: `0.0`.
 - `top_k` (`int`): Changes how the model selects tokens for output. A top-k of 3 means that the next token is selected
@@ -22,8 +22,8 @@ __init__(
 - `top_p` (`float`): Top-p changes how the model selects tokens for output. Tokens are selected from most probable to
    least until the sum of their probabilities equals the top_p value. Default: `0.95`.
 - `max_output_tokens` (`int`): The maximum number of tokens to generate by the model. The total length of input tokens 
-   and generated tokens is limited by the model's context length. Default: `2048`.
-- `model_total_max_tokens` (`int`): Context length of the model - maximum number of input plus generated tokens. Default: `30720`.
+   and generated tokens is limited by the model's context length. Default: `1024`.
+- `model_total_max_tokens` (`int`): Context length of the model - maximum number of input plus generated tokens. Default: `8192`.
 - `max_concurrency` (`int`): Maximum number of concurrent requests. Default: `1000`.
 - `max_retries` (`int`): Maximum number of retries if a request fails. Default: `8`.
 - `verbose` (`bool`): Default: `True`.
@@ -53,30 +53,33 @@ is not provided, the length of this list is equal 1, and the first element is th
 
 ---
 
-## `class allms.domain.configuration.VertexAIConfiguration` API
+## `class allms.domain.configuration.VertexAIModelGardenConfiguration` API
 ```python
-VertexAIConfiguration(
+VertexAIModelGardenConfiguration(
     cloud_project: str,
-    cloud_location: str
+    cloud_location: str,
+    endpoint_id: str
 )
 ```
 #### Parameters
 - `cloud_project` (`str`): The GCP project to use when making Vertex API calls.
 - `cloud_location` (`str`): The region to use when making API calls.
+- `endpoint_id` (`str`): ID of an endpoint where the model has been deployed.
 
 ---
 
 ### Example usage
 
 ```python
-from allms.models import VertexAIGeminiModel
-from allms.domain.configuration import VertexAIConfiguration
+from allms.models import VertexAIGemmaModel
+from allms.domain.configuration import VertexAIModelGardenConfiguration
 
-configuration = VertexAIConfiguration(
+configuration = VertexAIModelGardenConfiguration(
     cloud_project="<GCP_PROJECT_ID>",
-    cloud_location="<MODEL_REGION>"
+    cloud_location="<MODEL_REGION>",
+    endpoint_id="<ENDPOINT_ID>"
 )
 
-vertex_model = VertexAIGeminiModel(config=configuration)
+vertex_model = VertexAIGemmaModel(config=configuration)
 vertex_response = vertex_model.generate("2+2 is?")
 ```

@@ -24,6 +24,23 @@ Among the allms most notable features, you will find:
 
 ___
 
+## Supported Models
+
+| LLM Family  | Hosting             | Supported LLMs                          |
+|-------------|---------------------|-----------------------------------------|
+| GPT(s)      | OpenAI endpoint     | `gpt-3.5-turbo`, `gpt-4`, `gpt-4-turbo` |
+| Google LLMs | VertexAI deployment | `text-bison@001`, `gemini-pro`          |
+| Llama2      | Azure deployment    | `llama2-7b`, `llama2-13b`, `llama2-70b` |
+| Mistral     | Azure deployment    | `Mistral-7b`, `Mixtral-7bx8`            |
+| Gemma       | GCP deployment      | `gemma`                                 |
+
+* Do you already have a subscription to a Cloud Provider for any the models above? Configure
+the model using your credentials and start querying!
+* Are you interested in knowing how to self-deploy open-source models in Azure and GCP?
+Consult our [guide](https://allms.allegro.tech/usage/deploy_open_source_models/)
+
+___
+
 ## Documentation
 
 Full documentation available at **[allms.allegro.tech](https://allms.allegro.tech/)**

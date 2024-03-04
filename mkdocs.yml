@@ -8,7 +8,7 @@ nav:
       - Basic: usage/basic.md
       - Advanced: usage/advanced.md
       - Forcing Structured Output Format: usage/forcing_response_format.md
-      - Azure Open-source Models Deployment: usage/deploy_open_source_models.md
+      - How to Deploy Open-source Models on Azure and GCP?: usage/deploy_open_source_models.md
   - API:
       - Domain: api/input_output_dataclasses.md
       - Models:

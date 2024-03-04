@@ -1,5 +1,6 @@
-# How to Deploy Azure Open-source LLMs?
+# How to Deploy Open-source LLMs on Azure and GCP?
 
+## Azure
 
 To use Open-source models like Llama or Mistral with allms, first you have to deploy it on your own on Azure as a ML Online Endpoint. 
 Here's how to do it:
@@ -34,3 +35,5 @@ llama_response = llama_model.generate("2+2 is?")
 In case of any problems with deployment, you can review this guide on the Azure blog: 
 [Introducing Llama 2 on Azure](https://techcommunity.microsoft.com/t5/ai-machine-learning-blog/introducing-llama-2-on-azure/ba-p/3881233)
 
+## GCP
+[Follow the following guide](https://cloud.google.com/vertex-ai/docs/start/explore-models#deploy-a-model) to deploy a model on the GCP VertexAI Model Garden. 
