@@ -37,7 +37,7 @@ ___
 * Do you already have a subscription to a Cloud Provider for any the models above? Configure
 the model using your credentials and start querying!
 * Are you interested in knowing how to self-deploy open-source models in Azure and GCP?
-Consult our [guide](#TODO megatron6000 PR)
+Consult our [guide](https://allms.allegro.tech/usage/deploy_open_source_models/)
 
 ___
 
