@@ -56,7 +56,10 @@ class VertexAIModelGardenWrapper(VertexAIModelGarden):
     top_p: float = 0.95
     top_k: int = 40
     n: int = 1
-    allowed_model_args: Optional[List[str]] = ["temperature", "max_tokens", "top_p", "top_k", "n"]
+
+    def __init__(self):
+        super().__init__()
+        self.allowed_model_args = list(self._default_params.keys())
 
     @property
     def _default_params(self) -> Dict[str, Any]:
@@ -84,8 +87,11 @@ class VertexAIModelGardenWrapper(VertexAIModelGarden):
 
     def _parse_prediction(self, prediction: Any, prompt: str) -> str:
         parsed_prediction = super()._parse_prediction(prediction)
-        text_to_remove = f"Prompt:\n{prompt}\nOutput:\n"
-        return parsed_prediction.rsplit(text_to_remove, maxsplit=1)[1]
+        try:
+            text_to_remove = f"Prompt:\n{prompt}\nOutput:\n"
+            return parsed_prediction.rsplit(text_to_remove, maxsplit=1)[1]
+        except Exception:
+            raise ValueError(f"Output returned from the model doesn't follow the expected format.")
 
     async def _agenerate(
         self,
