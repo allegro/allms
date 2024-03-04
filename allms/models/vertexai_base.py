@@ -57,8 +57,8 @@ class VertexAIModelGardenWrapper(VertexAIModelGarden):
     top_k: int = 40
     n: int = 1
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
         self.allowed_model_args = list(self._default_params.keys())
 
     @property
