@@ -17,3 +17,4 @@ nav:
           - Azure OpenAI GPT: api/models/azure_openai_model.md
           - VertexAI PaLM2: api/models/vertexai_palm_model.md
           - VertexAI Gemini: api/models/vertexai_gemini_model.md
+          - VertexAI Gemma: api/models/vertexai_gemma.md
