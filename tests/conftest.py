@@ -36,9 +36,11 @@ class VertexAIMock(FakeListLLM):
 def models():
     event_loop = asyncio.new_event_loop()
 
-    with (patch("allms.models.vertexai_palm.CustomVertexAI", VertexAIMock),
-          patch("allms.models.vertexai_gemini.CustomVertexAI", VertexAIMock),
-          patch("allms.models.vertexai_gemma.VertexAIModelGardenWrapper", VertexAIMock)):
+    with (
+        patch("allms.models.vertexai_palm.CustomVertexAI", VertexAIMock),
+        patch("allms.models.vertexai_gemini.CustomVertexAI", VertexAIMock),
+        patch("allms.models.vertexai_gemma.VertexAIModelGardenWrapper", VertexAIMock)
+    ):
         return {
                 "azure_open_ai": AzureOpenAIModel(
                     config=AzureOpenAIConfiguration(
