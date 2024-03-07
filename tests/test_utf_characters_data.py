@@ -10,7 +10,6 @@ class TestModelBehaviorForSpecialCharacters:
     @pytest.mark.parametrize("input_character", list(html.entities.entitydefs.values()))
     def test_model_is_not_broken_by_special_characters(self, tokens_mock, arun_mock, input_character, models):
         # GIVEN
-        print(tokens_mock)
         arun_mock.return_value = f"{input_character}"
         tokens_mock.return_value = 1
 
