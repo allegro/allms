@@ -1,7 +1,6 @@
 import re
 
-import pandas as pd
-
+from allms.constants.input_data import IODataConstants
 from allms.domain.prompt_dto import KeywordsOutputClass
 from allms.utils import io_utils
 from tests.conftest import AzureOpenAIEnv
@@ -29,7 +28,7 @@ class TestEndToEnd:
             repeat=True
         )
 
-        input_data = io_utils.load_data(
+        input_data = io_utils.load_csv_to_input_data(
             limit=5,
             path="./tests/resources/test_input_data.csv"
         )
@@ -48,24 +47,24 @@ class TestEndToEnd:
         parsed_responses = sorted(parsed_responses, key=lambda key: key.input_data.id)
 
         # THEN
-        expected_output = pd.read_csv("./tests/resources/test_end_to_end_expected_output.csv")
-        expected_output = expected_output.astype({"id": "str", "text": "str"})
-        expected_output = expected_output.sort_values(by="id").reset_index(drop=True)
-        expected_output["response"] = expected_output["response"].apply(lambda x: eval(x))
+        expected_output = io_utils.load_csv("./tests/resources/test_end_to_end_expected_output.csv")
+        expected_output = sorted(expected_output, key=lambda example: example[IODataConstants.ID])
+        for idx in range(len(expected_output)):
+            expected_output[idx]["response"] = eval(expected_output[idx]["response"])
 
-        assert expected_output["id"].values.tolist() == list(
+        assert list(map(lambda output: output[IODataConstants.ID], expected_output)) == list(
             map(lambda example: example.input_data.id, parsed_responses))
 
-        assert expected_output["text"].values.tolist() == list(
+        assert list(map(lambda output: output[IODataConstants.TEXT], expected_output)) == list(
             map(lambda example: example.input_data.input_mappings["text"], parsed_responses))
 
-        assert expected_output["response"].values.tolist() == list(
+        assert list(map(lambda output: output[IODataConstants.RESPONSE_STR_NAME], expected_output)) == list(
             map(lambda example: example.response.keywords, parsed_responses))
 
-        assert expected_output["number_of_prompt_tokens"].values.tolist() == list(
+        assert list(map(lambda output: int(output[IODataConstants.PROMPT_TOKENS_NUMBER]), expected_output)) == list(
             map(lambda example: example.number_of_prompt_tokens, parsed_responses))
 
-        assert expected_output["number_of_generated_tokens"].values.tolist() == list(
+        assert list(map(lambda output: int(output[IODataConstants.GENERATED_TOKENS_NUMBER]), expected_output)) == list(
             map(lambda example: example.number_of_generated_tokens, parsed_responses))
 
     def test_model_times_out(
