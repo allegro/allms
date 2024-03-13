@@ -32,7 +32,7 @@ from allms.defaults.long_text_chain import LongTextChainDefaults
 from allms.domain.enumerables import AggregationLogicForLongInputData, LanguageModelTask
 from allms.domain.input_data import InputData
 from allms.domain.prompt_dto import SummaryOutputClass, KeywordsOutputClass
-from allms.domain.response import ResponseData
+from allms.domain.response import ResponseWithError, ResponseData
 from allms.utils.long_text_processing_utils import get_max_allowed_number_of_tokens
 
 logger = logging.getLogger(__name__)
@@ -58,6 +58,7 @@ class AbstractModel(ABC):
         self._is_long_text_bypass_enabled: bool = False  # Should be false till we fully implement support for long sequences in our package
         self._aggregation_strategy: AggregationLogicForLongInputData = AggregationLogicForLongInputData.SIMPLE_CONCATENATION
         self._parser: typing.Optional[PydanticOutputParser] = None
+        self._json_pattern = re.compile(r"{.*?}", re.DOTALL)
 
         if max_output_tokens >= model_total_max_tokens:
             raise ValueError("max_output_tokens has to be lower than model_total_max_tokens")
@@ -105,27 +106,49 @@ class AbstractModel(ABC):
         if output_data_model_class:
             return self._parse_model_output(model_responses)
         return model_responses
+    
+    def _extract_json_from_response(self, model_response_data: ResponseData) -> str:
+        search_results = self._json_pattern.findall(model_response_data.response)
+        
+        if len(search_results) == 0:
+            return model_response_data.response
+        
+        return search_results[0]
 
-    def _parse_response(self, model_response_data: ResponseData) -> typing.Tuple[str, typing.Optional[str]]:
+    def _parse_response(
+            self, 
+            model_response_data: ResponseData
+        ) -> ResponseWithError:
+        raw_response = self._extract_json_from_response(model_response_data)
+
         try:
-            return self._parser.parse(model_response_data.response), None
+            return ResponseWithError(
+                response=self._parser.parse(raw_response), 
+                error_message=None
+            )
         except OutputParserException as output_parser_exception:
-            return None, OutputParserException(
-                f"An OutputParserException has occurred for "
-                f"The response from model: {model_response_data.response}\n"
-                f"The exception message: {output_parser_exception}"
+            return ResponseWithError(
+                response=None, 
+                error_message=f"""
+                    An OutputParserException has occurred for the model response: {raw_response}
+                    The exception message: {output_parser_exception}
+                    """
             )
 
-    def _parse_model_output(self, model_responses_data: typing.List[ResponseData]) -> typing.List[ResponseData]:
+    def _parse_model_output(
+            self, 
+            model_responses_data: typing.List[ResponseData]
+        ) -> typing.List[ResponseData]:
         parsed_responses = []
+
         for model_response_data in model_responses_data:
             if not model_response_data.error:
-                response, error_message = self._parse_response(model_response_data)
+                response_with_error = self._parse_response(model_response_data)
 
                 parsed_responses.append(ResponseData(
                     input_data=model_response_data.input_data,
-                    response=response,
-                    error=error_message,
+                    response=response_with_error.response,
+                    error=response_with_error.error_message,
                     number_of_prompt_tokens=model_response_data.number_of_prompt_tokens,
                     number_of_generated_tokens=model_response_data.number_of_generated_tokens
 
