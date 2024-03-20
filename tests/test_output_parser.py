@@ -2,6 +2,7 @@ import json
 from unittest.mock import patch
 
 from langchain.schema import OutputParserException
+import pytest
 
 from allms.domain.input_data import InputData
 from allms.domain.prompt_dto import SummaryOutputClass, KeywordsOutputClass
@@ -46,11 +47,15 @@ class TestOutputModelParserForDifferentModelOutputs:
 
     @patch("langchain.chains.base.Chain.arun")
     @patch("langchain_community.llms.vertexai.VertexAI.get_num_tokens")
-    def test_output_parser_extracts_json_from_response(self, tokens_mock, chain_run_mock, models):
+    @pytest.mark.parametrize("json_response", [
+        ("{\"summary\": \"This is the model output\"}"),
+        ("Sure! Here's the JSON you wanted: {\"summary\": \"This is the model output\"} Have a nice day!"),
+        ("<<SYS>>\\n{\\n    \"summary\": \"This is the model output\"\\n}\\n<</SYS>>"),
+        ("{\\\"summary\\\": \\\"This is the model output\\\"}\\n}")
+    ])
+    def test_output_parser_extracts_json_from_response(self, tokens_mock, chain_run_mock, models, json_response):
         # GIVEN
-        text_output = "This is the model output"
-        expected_model_response = json.dumps({"summary": text_output})
-        chain_run_mock.return_value = f"Sure! Here's the JSON you wanted: {expected_model_response} Have a nice day!"
+        chain_run_mock.return_value = json_response
         tokens_mock.return_value = 1
 
         input_data = [InputData(input_mappings={"text": "Some dummy text"}, id="1")]
@@ -59,7 +64,7 @@ class TestOutputModelParserForDifferentModelOutputs:
         # WHEN & THEN
         for model in models.values():
             model_response = model.generate(prompt, input_data, SummaryOutputClass)
-            assert model_response[0].response == SummaryOutputClass(summary=text_output)
+            assert model_response[0].response == SummaryOutputClass(summary="This is the model output")
 
     @patch("langchain.chains.base.Chain.arun")
     @patch("langchain_community.llms.vertexai.VertexAI.get_num_tokens")

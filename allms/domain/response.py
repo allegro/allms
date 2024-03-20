@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from allms.domain.input_data import InputData
 
 
-class ResponseWithError(BaseModel):
+class ResponseParsingOutput(BaseModel):
     response: typing.Optional[typing.Any]
     error_message: typing.Optional[str]
 
