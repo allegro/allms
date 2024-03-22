@@ -38,6 +38,8 @@ class VertexAIGemmaModel(AbstractModel):
             event_loop=event_loop
         )
 
+        self._is_json_format_injected_into_prompt = False
+
     def _create_llm(self) -> VertexAIModelGarden:
         return VertexAIModelGardenWrapper(
             model_name=GemmaModelDefaults.GCP_MODEL_NAME,

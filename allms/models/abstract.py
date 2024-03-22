@@ -59,6 +59,7 @@ class AbstractModel(ABC):
         self._aggregation_strategy: AggregationLogicForLongInputData = AggregationLogicForLongInputData.SIMPLE_CONCATENATION
         self._parser: typing.Optional[PydanticOutputParser] = None
         self._json_pattern = re.compile(r"{.*?}", re.DOTALL)
+        self._is_json_format_injected_into_prompt: bool = True
 
         if max_output_tokens >= model_total_max_tokens:
             raise ValueError("max_output_tokens has to be lower than model_total_max_tokens")
@@ -127,10 +128,12 @@ class AbstractModel(ABC):
 
         if output_data_model_class:
             self._parser = PydanticOutputParser(pydantic_object=output_data_model_class)
-            prompt_template_args[PromptConstants.PARTIAL_VARIABLES_STR] = {
-                PromptConstants.OUTPUT_DATA_MODEL: self._parser.get_format_instructions(),
-            }
-            prompt_template_args[PromptConstants.TEMPLATE_STR] = self._add_output_data_format(prompt=prompt)
+
+            if self._is_json_format_injected_into_prompt:
+                prompt_template_args[PromptConstants.PARTIAL_VARIABLES_STR] = {
+                    PromptConstants.OUTPUT_DATA_MODEL: self._parser.get_format_instructions(),
+                }
+                prompt_template_args[PromptConstants.TEMPLATE_STR] = self._add_output_data_format(prompt=prompt)
 
         chat_prompts = await self._build_chat_prompts(prompt_template_args, system_prompt)
 

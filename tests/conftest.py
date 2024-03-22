@@ -39,7 +39,9 @@ def models():
     with (
         patch("allms.models.vertexai_palm.CustomVertexAI", VertexAIMock),
         patch("allms.models.vertexai_gemini.CustomVertexAI", VertexAIMock),
-        patch("allms.models.vertexai_gemma.VertexAIModelGardenWrapper", VertexAIMock)
+        patch("allms.models.vertexai_gemma.VertexAIModelGardenWrapper", VertexAIMock),
+        patch("allms.models.azure_llama2.AzureMLOnlineEndpointAsync", VertexAIMock),
+        patch("allms.models.azure_mistral.AzureMLOnlineEndpointAsync", VertexAIMock)
     ):
         return {
                 "azure_open_ai": AzureOpenAIModel(
