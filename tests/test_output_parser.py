@@ -2,6 +2,7 @@ import json
 from unittest.mock import patch
 
 from langchain.schema import OutputParserException
+import pytest
 
 from allms.domain.input_data import InputData
 from allms.domain.prompt_dto import SummaryOutputClass, KeywordsOutputClass
@@ -41,7 +42,44 @@ class TestOutputModelParserForDifferentModelOutputs:
         # WHEN & THEN
         for model in models.values():
             model_response = model.generate(prompt, input_data, SummaryOutputClass)
-            assert type(model_response[0].error) == OutputParserException
+            assert "OutputParserException" in model_response[0].error
+            assert model_response[0].response is None
+
+    @patch("langchain.chains.base.Chain.arun")
+    @patch("langchain_community.llms.vertexai.VertexAI.get_num_tokens")
+    @pytest.mark.parametrize("json_response", [
+        ("{\"summary\": \"This is the model output\"}"),
+        ("Sure! Here's the JSON you wanted: {\"summary\": \"This is the model output\"} Have a nice day!"),
+        ("<<SYS>>\\n{\\n    \"summary\": \"This is the model output\"\\n}\\n<</SYS>>"),
+        ("{\\\"summary\\\": \\\"This is the model output\\\"}\\n}")
+    ])
+    def test_output_parser_extracts_json_from_response(self, tokens_mock, chain_run_mock, models, json_response):
+        # GIVEN
+        chain_run_mock.return_value = json_response
+        tokens_mock.return_value = 1
+
+        input_data = [InputData(input_mappings={"text": "Some dummy text"}, id="1")]
+        prompt = "Some Dummy Prompt {text}"
+
+        # WHEN & THEN
+        for model in models.values():
+            model_response = model.generate(prompt, input_data, SummaryOutputClass)
+            assert model_response[0].response == SummaryOutputClass(summary="This is the model output")
+
+    @patch("langchain.chains.base.Chain.arun")
+    @patch("langchain_community.llms.vertexai.VertexAI.get_num_tokens")
+    def test_output_parser_returns_error_when_json_is_garbled(self, tokens_mock, chain_run_mock, models):
+        # GIVEN
+        chain_run_mock.return_value = "Sure! Here's the JSON you wanted: {\"summary: \"text\"}"
+        tokens_mock.return_value = 1
+
+        input_data = [InputData(input_mappings={"text": "Some dummy text"}, id="1")]
+        prompt = "Some Dummy Prompt {text}"
+
+        # WHEN & THEN
+        for model in models.values():
+            model_response = model.generate(prompt, input_data, SummaryOutputClass)
+            assert "OutputParserException" in model_response[0].error
             assert model_response[0].response is None
 
     @patch("langchain.chains.base.Chain.arun")
@@ -94,4 +132,4 @@ class TestOutputModelParserForDifferentModelOutputs:
         for model in models.values():
             model_response = model.generate(prompt, None, KeywordsOutputClass)
             assert model_response[0].response is None
-            assert type(model_response[0].error) == OutputParserException
+            assert "OutputParserException" in model_response[0].error

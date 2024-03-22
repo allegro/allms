@@ -13,7 +13,6 @@ from langchain.chains import LLMChain
 from langchain.chat_models.base import BaseChatModel
 from langchain.output_parsers import PydanticOutputParser
 from langchain.prompts import ChatPromptTemplate
-from langchain.schema import OutputParserException
 from langchain_core.language_models.llms import create_base_retry_decorator
 from langchain_core.prompts import HumanMessagePromptTemplate, SystemMessagePromptTemplate
 from langchain_core.prompts.prompt import PromptTemplate
@@ -34,6 +33,7 @@ from allms.domain.input_data import InputData
 from allms.domain.prompt_dto import SummaryOutputClass, KeywordsOutputClass
 from allms.domain.response import ResponseData
 from allms.utils.long_text_processing_utils import get_max_allowed_number_of_tokens
+from allms.utils.response_parsing_utils import ResponseParser
 
 logger = logging.getLogger(__name__)
 
@@ -58,6 +58,8 @@ class AbstractModel(ABC):
         self._is_long_text_bypass_enabled: bool = False  # Should be false till we fully implement support for long sequences in our package
         self._aggregation_strategy: AggregationLogicForLongInputData = AggregationLogicForLongInputData.SIMPLE_CONCATENATION
         self._parser: typing.Optional[PydanticOutputParser] = None
+        self._json_pattern = re.compile(r"{.*?}", re.DOTALL)
+        self._is_json_format_injected_into_prompt: bool = True
 
         if max_output_tokens >= model_total_max_tokens:
             raise ValueError("max_output_tokens has to be lower than model_total_max_tokens")
@@ -103,37 +105,8 @@ class AbstractModel(ABC):
         )
 
         if output_data_model_class:
-            return self._parse_model_output(model_responses)
+            return ResponseParser(self._parser).parse_model_output(model_responses)
         return model_responses
-
-    def _parse_response(self, model_response_data: ResponseData) -> typing.Tuple[str, typing.Optional[str]]:
-        try:
-            return self._parser.parse(model_response_data.response), None
-        except OutputParserException as output_parser_exception:
-            return None, OutputParserException(
-                f"An OutputParserException has occurred for "
-                f"The response from model: {model_response_data.response}\n"
-                f"The exception message: {output_parser_exception}"
-            )
-
-    def _parse_model_output(self, model_responses_data: typing.List[ResponseData]) -> typing.List[ResponseData]:
-        parsed_responses = []
-        for model_response_data in model_responses_data:
-            if not model_response_data.error:
-                response, error_message = self._parse_response(model_response_data)
-
-                parsed_responses.append(ResponseData(
-                    input_data=model_response_data.input_data,
-                    response=response,
-                    error=error_message,
-                    number_of_prompt_tokens=model_response_data.number_of_prompt_tokens,
-                    number_of_generated_tokens=model_response_data.number_of_generated_tokens
-
-                ))
-            else:
-                parsed_responses.append(model_response_data)
-
-        return parsed_responses
 
     async def _generate(
             self,
@@ -155,10 +128,12 @@ class AbstractModel(ABC):
 
         if output_data_model_class:
             self._parser = PydanticOutputParser(pydantic_object=output_data_model_class)
-            prompt_template_args[PromptConstants.PARTIAL_VARIABLES_STR] = {
-                PromptConstants.OUTPUT_DATA_MODEL: self._parser.get_format_instructions(),
-            }
-            prompt_template_args[PromptConstants.TEMPLATE_STR] = self._add_output_data_format(prompt=prompt)
+
+            if self._is_json_format_injected_into_prompt:
+                prompt_template_args[PromptConstants.PARTIAL_VARIABLES_STR] = {
+                    PromptConstants.OUTPUT_DATA_MODEL: self._parser.get_format_instructions(),
+                }
+                prompt_template_args[PromptConstants.TEMPLATE_STR] = self._add_output_data_format(prompt=prompt)
 
         chat_prompts = await self._build_chat_prompts(prompt_template_args, system_prompt)
 

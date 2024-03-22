@@ -1,11 +1,15 @@
 import typing
 from asyncio import AbstractEventLoop
+from typing import List, Type
 
 from langchain_community.chat_models.azureml_endpoint import LlamaChatContentFormatter
+from pydantic import BaseModel
 
 from allms.defaults.azure_defaults import AzureLlama2Defaults
 from allms.defaults.general_defaults import GeneralDefaults
 from allms.domain.configuration import AzureSelfDeployedConfiguration
+from allms.domain.input_data import InputData
+from allms.domain.response import ResponseData
 from allms.models.abstract import AbstractModel
 from allms.models.azure_base import AzureMLOnlineEndpointAsync
 
@@ -34,6 +38,8 @@ class AzureLlama2Model(AbstractModel):
             max_retries=max_retries,
             event_loop=event_loop
         )
+
+        self._is_json_format_injected_into_prompt = False
 
     def _create_llm(self) -> AzureMLOnlineEndpointAsync:
         model_kwargs = {"max_new_tokens": self._max_output_tokens, "top_p": self._top_p, "do_sample": False}

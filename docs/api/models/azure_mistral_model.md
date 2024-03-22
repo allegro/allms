@@ -37,8 +37,7 @@ generate(
 - `input_data` (`Optional[List[InputData]]`): If prompt contains symbolic variables you can use this parameter to
    generate model responses for batch of examples. Each symbolic variable from the prompt should have mapping provided
    in the `input_mappings` of `InputData`.
-- `output_data_model_class` (`Optional[Type[BaseModel]]`): If provided forces the model to generate output in the
-  format defined by the passed class. Generated response is automatically parsed to this class.
+- `output_data_model_class` (`Optional[Type[BaseModel]]`): Generated response is automatically parsed to this class. WARNING: You need to manually provide the JSON format instructions in the prompt, they are not injected for this model.
 
 Note that Mistral-based models currently don't support system prompts.
 

@@ -66,13 +66,10 @@ False
 
 ## What to do when output formatting doesn't work?
 
-The feature described above works best with advanced proprietary models like GPT and PaLM/Gemini. Less capable models like Llama2 or Mistral
-may not able to understand instructions passed as output_dataclasses, and in most cases the returned response won't be compatible
-with the defined format, resulting in an unexpected response.
+The feature described above works only with advanced proprietary models like GPT and PaLM/Gemini. Less capable models like Llama2 or Mistral
+are unable to understand instructions passed as output_dataclasses.
 
-In such cases, we recommend to address the issue by specifying in the prompt how the response should look like. Using
-few-shot learning techniques is also advisable. In the case of JSON-like output, use double curly brackets to escape them in order
-to use them in the JSON example.
+For these less capable models, you need to manually specify in the prompt how the response should look like. You can then pass the `output_data_model_class` to try parsing the output. Using few-shot learning techniques is also advisable. In the case of JSON-like output, use double curly brackets instead of single ones, e.g. `{{"key": "value"}}` instead of `{"key": "value"}`.
 
 ## How forcing response format works under the hood?
 To force the model to provide output in a desired format, under the hood `allms` automatically adds a description
@@ -90,7 +87,7 @@ Here is the output schema:
 ```
 ````
 
-This feature is really helpful, but you have to bear in mind that by using it you increase the number or prompt tokens
+This feature is really helpful, but you have to keep in mind that by using it you increase the number or prompt tokens
 so it'll make the requests more costly (if you're using model with per token pricing)
 
 If the model will return an output that doesn't comform to the defined data model, raw model response will be returned

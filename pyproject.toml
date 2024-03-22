@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "allms"
-version = "1.0.1"
+version = "1.0.2"
 description = ""
 authors = ["Allegro Opensource <opensource@allegro.com>"]
 readme = "README.md"
@@ -17,6 +17,7 @@ langchain = "^0.0.351"
 aioresponses = "^0.7.6"
 tiktoken = "^0.6.0"
 openai = "^0.27.8"
+pytest-mock = "^3.14.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"
