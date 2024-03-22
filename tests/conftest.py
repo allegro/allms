@@ -27,7 +27,7 @@ class GenerativeModels:
     vertex_palm: typing.Optional[VertexAIPalmModel] = None
 
 
-class VertexAIMock(FakeListLLM):
+class ModelWithoutAsyncRequestsMock(FakeListLLM):
     def __init__(self, *args, **kwargs):
         super().__init__(responses=["{}"])
 
@@ -37,11 +37,11 @@ def models():
     event_loop = asyncio.new_event_loop()
 
     with (
-        patch("allms.models.vertexai_palm.CustomVertexAI", VertexAIMock),
-        patch("allms.models.vertexai_gemini.CustomVertexAI", VertexAIMock),
-        patch("allms.models.vertexai_gemma.VertexAIModelGardenWrapper", VertexAIMock),
-        patch("allms.models.azure_llama2.AzureMLOnlineEndpointAsync", VertexAIMock),
-        patch("allms.models.azure_mistral.AzureMLOnlineEndpointAsync", VertexAIMock)
+        patch("allms.models.vertexai_palm.CustomVertexAI", ModelWithoutAsyncRequestsMock),
+        patch("allms.models.vertexai_gemini.CustomVertexAI", ModelWithoutAsyncRequestsMock),
+        patch("allms.models.vertexai_gemma.VertexAIModelGardenWrapper", ModelWithoutAsyncRequestsMock),
+        patch("allms.models.azure_llama2.AzureMLOnlineEndpointAsync", ModelWithoutAsyncRequestsMock),
+        patch("allms.models.azure_mistral.AzureMLOnlineEndpointAsync", ModelWithoutAsyncRequestsMock)
     ):
         return {
                 "azure_open_ai": AzureOpenAIModel(
