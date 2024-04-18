@@ -65,7 +65,14 @@ class AbstractModel(ABC):
             raise ValueError("max_output_tokens has to be lower than model_total_max_tokens")
 
         self._llm = self._create_llm()
-        self._event_loop = event_loop if event_loop is not None else asyncio.get_event_loop()
+
+        if not event_loop:
+            try:
+                event_loop = asyncio.get_running_loop()
+            except RuntimeError as error:
+                event_loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(event_loop)
+        self._event_loop = event_loop
 
         self._predict_example = create_base_retry_decorator(
             error_types=[
