@@ -1,4 +1,7 @@
 from dataclasses import dataclass
+from typing import Optional
+
+from allms.defaults.vertex_ai import GeminiModelDefaults, PalmModelDefaults
 
 
 @dataclass
@@ -21,8 +24,21 @@ class AzureSelfDeployedConfiguration:
 class VertexAIConfiguration:
     cloud_project: str
     cloud_location: str
+    palm_model_name: Optional[str] = PalmModelDefaults.GCP_MODEL_NAME
+    gemini_model_name: Optional[str] = GeminiModelDefaults.GCP_MODEL_NAME
 
 
-@dataclass
 class VertexAIModelGardenConfiguration(VertexAIConfiguration):
-    endpoint_id: str
+    def __init__(
+        self,
+        cloud_project: str,
+        cloud_location: str,
+        endpoint_id: str
+    ):
+        super().__init__(
+            cloud_project=cloud_project,
+            cloud_location=cloud_location,
+            palm_model_name=None,
+            gemini_model_name=None
+        )
+        self.endpoint_id = endpoint_id

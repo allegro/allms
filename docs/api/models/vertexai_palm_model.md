@@ -57,12 +57,14 @@ is not provided, the length of this list is equal 1, and the first element is th
 ```python
 VertexAIConfiguration(
     cloud_project: str,
-    cloud_location: str
+    cloud_location: str,
+    palm_model_name: str
 )
 ```
 #### Parameters
 - `cloud_project` (`str`): The GCP project to use when making Vertex API calls.
 - `cloud_location` (`str`): The region to use when making API calls.
+- `palm_model_name` (`str`): The specific Palm version you want to use. Default value: `text-bison@001`.
 
 ---
 
@@ -74,7 +76,8 @@ from allms.domain.configuration import VertexAIConfiguration
 
 configuration = VertexAIConfiguration(
     cloud_project="<GCP_PROJECT_ID>",
-    cloud_location="<MODEL_REGION>"
+    cloud_location="<MODEL_REGION>",
+    palm_model_name="<MODEL_NAME>"
 )
 
 vertex_model = VertexAIPalmModel(config=configuration)
