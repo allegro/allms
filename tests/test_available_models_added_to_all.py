@@ -1,7 +1,3 @@
-# import html.entities
-# from unittest.mock import patch
-#
-# import pytest
 from allms import models
 
 

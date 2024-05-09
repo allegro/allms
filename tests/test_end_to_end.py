@@ -4,7 +4,9 @@ from unittest.mock import patch
 from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, PromptTemplate, SystemMessagePromptTemplate
 
 from allms.constants.input_data import IODataConstants
+from allms.domain.configuration import VertexAIConfiguration
 from allms.domain.prompt_dto import KeywordsOutputClass
+from allms.models.vertexai_gemini import VertexAIGeminiModel
 from allms.utils import io_utils
 from tests.conftest import AzureOpenAIEnv
 
@@ -145,6 +147,20 @@ class TestEndToEnd:
                         )
                     )
                 ])
+
+    def test_gemini_version_is_passed_to_model(self):
+        # GIVEN
+        model_config = VertexAIConfiguration(
+                cloud_project="dummy-project-id",
+                cloud_location="us-central1",
+                gemini_model_name="gemini-model-name"
+            )
+        
+        # WHEN
+        gemini_model = VertexAIGeminiModel(config=model_config)
+
+        # WHEN
+        gemini_model._llm.model_name == "gemini-model-name"
 
     def test_model_times_out(
             self,

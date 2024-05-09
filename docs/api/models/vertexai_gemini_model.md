@@ -57,12 +57,14 @@ is not provided, the length of this list is equal 1, and the first element is th
 ```python
 VertexAIConfiguration(
     cloud_project: str,
-    cloud_location: str
+    cloud_location: str,
+    gemini_model_name: str
 )
 ```
 #### Parameters
 - `cloud_project` (`str`): The GCP project to use when making Vertex API calls.
 - `cloud_location` (`str`): The region to use when making API calls.
+- `gemini_model_name` (`str`): The specific Gemini version you want to use. Default value: `gemini-pro` (i.e. Gemini 1.0).
 
 ---
 
@@ -74,7 +76,8 @@ from allms.domain.configuration import VertexAIConfiguration
 
 configuration = VertexAIConfiguration(
     cloud_project="<GCP_PROJECT_ID>",
-    cloud_location="<MODEL_REGION>"
+    cloud_location="<MODEL_REGION>",
+    gemini_model_name="<MODEL_NAME>"
 )
 
 vertex_model = VertexAIGeminiModel(config=configuration)

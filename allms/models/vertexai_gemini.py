@@ -39,7 +39,7 @@ class VertexAIGeminiModel(AbstractModel):
 
     def _create_llm(self) -> VertexAI:
         return CustomVertexAI(
-            model_name=GeminiModelDefaults.GCP_MODEL_NAME,
+            model_name=self._config.gemini_model_name,
             max_output_tokens=self._max_output_tokens,
             temperature=self._temperature,
             top_p=self._top_p,
