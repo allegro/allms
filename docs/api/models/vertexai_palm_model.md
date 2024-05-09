@@ -57,7 +57,8 @@ is not provided, the length of this list is equal 1, and the first element is th
 ```python
 VertexAIConfiguration(
     cloud_project: str,
-    cloud_location: str
+    cloud_location: str,
+    palm_model_name: str
 )
 ```
 #### Parameters
