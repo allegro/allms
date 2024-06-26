@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "allms"
-version = "1.0.4"
+version = "1.0.5"
 description = ""
 authors = ["Allegro Opensource <opensource@allegro.com>"]
 readme = "README.md"
