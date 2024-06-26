@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "allms"
-version = "1.0.4"
+version = "1.0.5"
 description = ""
 authors = ["Allegro Opensource <opensource@allegro.com>"]
 readme = "README.md"
 packages = [{include = "allms"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">=3.8.1,<4.0"
 fsspec = "^2023.6.0"
 google-cloud-aiplatform = "1.38.0"
 pydash = "^7.0.6"

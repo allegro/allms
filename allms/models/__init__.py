@@ -1,4 +1,4 @@
-from typing import Type
+from typing import Dict, Type
 
 from allms.domain.enumerables import AvailableModels
 from allms.models.abstract import AbstractModel
@@ -20,7 +20,7 @@ __all__ = [
 ]
 
 
-def get_available_models() -> dict[str, Type[AbstractModel]]:
+def get_available_models() -> Dict[str, Type[AbstractModel]]:
     return {
         AvailableModels.AZURE_OPENAI_MODEL: AzureOpenAIModel,
         AvailableModels.AZURE_LLAMA2_MODEL: AzureLlama2Model,
