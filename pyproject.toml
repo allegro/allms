@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "allms"
-version = "1.0.5"
+version = "1.0.6"
 description = ""
 authors = ["Allegro Opensource <opensource@allegro.com>"]
 readme = "README.md"
@@ -13,7 +13,7 @@ google-cloud-aiplatform = "1.38.0"
 pydash = "^7.0.6"
 transformers = "^4.34.1"
 pydantic = "1.10.13"
-langchain = "^0.0.351"
+langchain = "^0.1.8"
 aioresponses = "^0.7.6"
 tiktoken = "^0.6.0"
 openai = "^0.27.8"
