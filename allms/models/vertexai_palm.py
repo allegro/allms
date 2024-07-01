@@ -1,5 +1,5 @@
 from asyncio import AbstractEventLoop
-from langchain_community.llms.vertexai import VertexAI
+from langchain_google_vertexai import VertexAI
 from typing import Optional
 
 from allms.defaults.general_defaults import GeneralDefaults

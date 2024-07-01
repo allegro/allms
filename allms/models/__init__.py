@@ -1,5 +1,6 @@
 from typing import Dict, Type
 
+from allms.domain.configuration import HarmBlockThreshold, HarmCategory
 from allms.domain.enumerables import AvailableModels
 from allms.models.abstract import AbstractModel
 from allms.models.azure_llama2 import AzureLlama2Model
@@ -16,6 +17,8 @@ __all__ = [
     "VertexAIPalmModel",
     "VertexAIGeminiModel",
     "VertexAIGemmaModel",
+    "HarmCategory",
+    "HarmBlockThreshold",
     "get_available_models"
 ]
 

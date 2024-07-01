@@ -1,5 +1,7 @@
 from dataclasses import dataclass
-from typing import Optional
+from typing import Dict, Optional
+
+from langchain_google_vertexai import HarmBlockThreshold, HarmCategory
 
 from allms.defaults.vertex_ai import GeminiModelDefaults, PalmModelDefaults
 
@@ -26,6 +28,7 @@ class VertexAIConfiguration:
     cloud_location: str
     palm_model_name: Optional[str] = PalmModelDefaults.GCP_MODEL_NAME
     gemini_model_name: Optional[str] = GeminiModelDefaults.GCP_MODEL_NAME
+    gemini_safety_settings: Optional[Dict[HarmCategory, HarmBlockThreshold]] = None
 
 
 class VertexAIModelGardenConfiguration(VertexAIConfiguration):

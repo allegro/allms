@@ -1,6 +1,6 @@
 from asyncio import AbstractEventLoop
 
-from langchain_community.llms.vertexai import VertexAIModelGarden
+from langchain_google_vertexai import VertexAIModelGarden
 from typing import Optional
 
 from allms.defaults.general_defaults import GeneralDefaults
