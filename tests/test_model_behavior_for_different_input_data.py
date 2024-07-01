@@ -78,7 +78,7 @@ class TestModelBehaviorForDifferentInput:
                 model.generate(prompt, None)
 
     @patch("langchain.chains.base.Chain.arun")
-    @patch("langchain_community.llms.vertexai.VertexAI.get_num_tokens")
+    @patch("langchain_google_vertexai.llms.VertexAI.get_num_tokens")
     def test_exception_when_num_prompt_tokens_larger_than_model_total_max_tokens(self, tokens_mock, chain_run_mock, models):
         # GIVEN
         chain_run_mock.return_value = "{}"
@@ -97,7 +97,7 @@ class TestModelBehaviorForDifferentInput:
             assert "Value Error has occurred: Prompt is too long" in response.error
 
     @patch("langchain.chains.base.Chain.arun")
-    @patch("langchain_community.llms.vertexai.VertexAI.get_num_tokens")
+    @patch("langchain_google_vertexai.llms.VertexAI.get_num_tokens")
     def test_whether_curly_brackets_are_not_breaking_the_prompt(self, tokens_mock, chain_run_mock, models):
         # GIVEN
         chain_run_mock.return_value = "{}"
@@ -115,7 +115,7 @@ class TestModelBehaviorForDifferentInput:
             assert response.response is not None
 
     @patch("langchain.chains.base.Chain.arun")
-    @patch("langchain_community.llms.vertexai.VertexAI.get_num_tokens")
+    @patch("langchain_google_vertexai.llms.VertexAI.get_num_tokens")
     def test_warning_when_num_prompt_tokens_plus_max_output_tokens_larger_than_model_total_max_tokens(
             self,
             tokens_mock,

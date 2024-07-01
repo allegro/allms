@@ -1,5 +1,5 @@
 from asyncio import AbstractEventLoop
-from langchain_community.llms.vertexai import VertexAI
+from langchain_google_vertexai import VertexAI
 from typing import Optional
 
 from allms.defaults.general_defaults import GeneralDefaults
@@ -44,6 +44,7 @@ class VertexAIGeminiModel(AbstractModel):
             temperature=self._temperature,
             top_p=self._top_p,
             top_k=self._top_k,
+            safety_settings=self._config.gemini_safety_settings,
             verbose=self._verbose,
             project=self._config.cloud_project,
             location=self._config.cloud_location
