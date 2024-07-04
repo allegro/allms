@@ -33,7 +33,6 @@ class AzureOpenAIModel(AbstractModel):
             event_loop=event_loop
         )
 
-    from langchain_community.chat_models import AzureChatOpenAI
     def _create_llm(self) -> AzureChatOpenAI:
         return AzureChatOpenAI(
             deployment_name=self._config.deployment,
