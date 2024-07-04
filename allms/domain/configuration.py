@@ -12,7 +12,8 @@ class AzureOpenAIConfiguration:
     deployment: str
     model_name: str
     api_version: str
-    api_key: str
+    api_key: Optional[str] = None
+    azure_ad_token: Optional[str] = None
 
 
 @dataclass
