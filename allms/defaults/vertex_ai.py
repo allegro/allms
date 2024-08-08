@@ -10,7 +10,7 @@ class PalmModelDefaults:
 
 
 class GeminiModelDefaults:
-    GCP_MODEL_NAME = "gemini-1.0-pro-001"
+    GCP_MODEL_NAME = "gemini-1.5-flash-001"
     MODEL_TOTAL_MAX_TOKENS = 30720
     MAX_OUTPUT_TOKENS = 2048
     TEMPERATURE = 0.0

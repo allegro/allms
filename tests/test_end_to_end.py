@@ -72,7 +72,6 @@ class TestEndToEnd:
         assert list(map(lambda output: int(output[IODataConstants.GENERATED_TOKENS_NUMBER]), expected_output)) == list(
             map(lambda example: example.number_of_generated_tokens, parsed_responses))
         
-    
     def test_prompt_is_not_modified_for_open_source_models(self, mock_aioresponse, models, mocker):
         # GIVEN
         open_source_models = ["azure_llama2", "azure_mistral", "vertex_gemma"]
@@ -150,7 +149,7 @@ class TestEndToEnd:
 
     def test_gemini_specific_args_are_passed_to_model(self):
         # GIVEN
-        gemini_model_name = "gemini-1.0-pro-001"
+        gemini_model_name = "gemini-1.5-pro-001"
         gemini_safety_settings = {
             HarmCategory.HARM_CATEGORY_UNSPECIFIED: HarmBlockThreshold.BLOCK_NONE,
             HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
