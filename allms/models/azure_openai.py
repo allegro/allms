@@ -40,6 +40,7 @@ class AzureOpenAIModel(AbstractModel):
             model_name=self._config.model_name,
             base_url=self._config.base_url,
             api_key=self._config.api_key,
+            azure_ad_token=self._config.azure_ad_token,
             temperature=self._temperature,
             max_tokens=self._max_output_tokens,
             request_timeout=self._request_timeout_s
