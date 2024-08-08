@@ -150,7 +150,7 @@ class TestEndToEnd:
 
     def test_gemini_specific_args_are_passed_to_model(self):
         # GIVEN
-        gemini_model_name = "gemini-model-name"
+        gemini_model_name = "gemini-1.0-pro-001"
         gemini_safety_settings = {
             HarmCategory.HARM_CATEGORY_UNSPECIFIED: HarmBlockThreshold.BLOCK_NONE,
             HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
