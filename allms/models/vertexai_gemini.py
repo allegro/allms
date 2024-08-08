@@ -1,10 +1,15 @@
+import typing
 from asyncio import AbstractEventLoop
+
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_google_vertexai import VertexAI
+from vertexai.preview import tokenization
 from typing import Optional
 
 from allms.defaults.general_defaults import GeneralDefaults
 from allms.defaults.vertex_ai import GeminiModelDefaults
 from allms.domain.configuration import VertexAIConfiguration
+from allms.domain.input_data import InputData
 from allms.models.vertexai_base import CustomVertexAI
 from allms.models.abstract import AbstractModel
 
@@ -28,6 +33,8 @@ class VertexAIGeminiModel(AbstractModel):
         self._verbose = verbose
         self._config = config
 
+        self._gcp_tokenizer = tokenization.get_tokenizer_for_model(self._config.gemini_model_name)
+
         super().__init__(
             temperature=temperature,
             model_total_max_tokens=model_total_max_tokens,
@@ -49,3 +56,14 @@ class VertexAIGeminiModel(AbstractModel):
             project=self._config.cloud_project,
             location=self._config.cloud_location
         )
+
+    def _get_prompt_tokens_number(self, prompt: ChatPromptTemplate, input_data: InputData) -> int:
+        return self._gcp_tokenizer.count_tokens(
+            prompt.format_prompt(**input_data.input_mappings).to_string()
+        ).total_tokens
+
+    def _get_model_response_tokens_number(self, model_response: typing.Optional[str]) -> int:
+        if model_response:
+            return self._gcp_tokenizer.count_tokens(model_response).total_tokens
+        return 0
+
