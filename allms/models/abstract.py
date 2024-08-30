@@ -32,6 +32,7 @@ from allms.domain.enumerables import AggregationLogicForLongInputData, LanguageM
 from allms.domain.input_data import InputData
 from allms.domain.prompt_dto import SummaryOutputClass, KeywordsOutputClass
 from allms.domain.response import ResponseData
+from allms.models.vertexai_base import GCPInvalidRequestError
 from allms.utils.long_text_processing_utils import get_max_allowed_number_of_tokens
 from allms.utils.response_parsing_utils import ResponseParser
 
@@ -260,7 +261,7 @@ class AbstractModel(ABC):
                 model_response = None
                 error_message = f"{IODataConstants.ERROR_MESSAGE_STR}: {invalid_request_error}"
 
-        except (InvalidArgument, ValueError, TimeoutError, openai.error.Timeout) as other_error:
+        except (InvalidArgument, ValueError, TimeoutError, openai.error.Timeout, GCPInvalidRequestError) as other_error:
             model_response = None
             logger.info(f"Error for id {input_data.id} has occurred. Message: {other_error} ")
             error_message = f"{type(other_error).__name__}: {other_error}"
