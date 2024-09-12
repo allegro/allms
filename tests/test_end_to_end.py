@@ -1,7 +1,8 @@
 import re
 
-from unittest.mock import patch
-from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, PromptTemplate, SystemMessagePromptTemplate
+import pytest
+from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, PromptTemplate, \
+    SystemMessagePromptTemplate
 
 from allms.constants.input_data import IODataConstants
 from allms.domain.configuration import VertexAIConfiguration
@@ -170,6 +171,40 @@ class TestEndToEnd:
         # THEN
         assert gemini_model._llm.model_name == gemini_model_name
         assert gemini_model._llm.safety_settings == gemini_safety_settings
+
+    @pytest.mark.parametrize(
+        "model_name", [
+            "gemini-1.0-pro", "gemini-1.5-pro", "gemini-1.5-flash","gemini-1.0-pro-001", "gemini-1.0-pro-002",
+            "gemini-1.5-pro-001", "gemini-1.5-flash-001", "gemini-1.5-pro-preview-0514"
+        ]
+    )
+    def test_correct_gemini_model_name_work(self, model_name):
+        # GIVEN
+        model_config = VertexAIConfiguration(
+            cloud_project="dummy-project-id",
+            cloud_location="us-central1",
+            gemini_model_name=model_name,
+        )
+
+        # WHEN & THEN
+        VertexAIGeminiModel(config=model_config)
+
+    @pytest.mark.parametrize(
+        "model_name", [
+            "gemini-2.0-pro", "geminis-1.5-pro", "gemini-flash", "gemini-1.5-preview-pro", "gpt4"
+        ]
+    )
+    def test_incorrect_gemini_model_name_fail(self, model_name):
+        # GIVEN
+        model_config = VertexAIConfiguration(
+            cloud_project="dummy-project-id",
+            cloud_location="us-central1",
+            gemini_model_name=model_name,
+        )
+
+        # WHEN & THEN
+        with pytest.raises(ValueError, match=f"Model {model_name} is not supported."):
+            VertexAIGeminiModel(config=model_config)
 
     def test_model_times_out(
             self,

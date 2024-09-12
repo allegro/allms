@@ -1,17 +1,20 @@
 import typing
 from asyncio import AbstractEventLoop
+from typing import Optional
 
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_google_vertexai import VertexAI
 from vertexai.preview import tokenization
-from typing import Optional
+from vertexai.tokenization._tokenizers import Tokenizer
 
 from allms.defaults.general_defaults import GeneralDefaults
 from allms.defaults.vertex_ai import GeminiModelDefaults
 from allms.domain.configuration import VertexAIConfiguration
 from allms.domain.input_data import InputData
-from allms.models.vertexai_base import CustomVertexAI
 from allms.models.abstract import AbstractModel
+from allms.models.vertexai_base import CustomVertexAI
+
+BASE_GEMINI_MODEL_NAMES = ["gemini-1.0-pro", "gemini-1.5-pro", "gemini-1.5-flash"]
 
 
 class VertexAIGeminiModel(AbstractModel):
@@ -33,7 +36,7 @@ class VertexAIGeminiModel(AbstractModel):
         self._verbose = verbose
         self._config = config
 
-        self._gcp_tokenizer = tokenization.get_tokenizer_for_model(self._config.gemini_model_name)
+        self._gcp_tokenizer = self._get_gcp_tokenizer(self._config.gemini_model_name)
 
         super().__init__(
             temperature=temperature,
@@ -66,4 +69,14 @@ class VertexAIGeminiModel(AbstractModel):
         if model_response:
             return self._gcp_tokenizer.count_tokens(model_response).total_tokens
         return 0
+
+    @staticmethod
+    def _get_gcp_tokenizer(model_name) -> Tokenizer:
+        try:
+            return tokenization.get_tokenizer_for_model(model_name)
+        except ValueError:
+            for base_model_name in BASE_GEMINI_MODEL_NAMES:
+                if model_name.startswith(base_model_name):
+                    return tokenization.get_tokenizer_for_model(base_model_name)
+            raise
 
