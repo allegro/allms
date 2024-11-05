@@ -144,7 +144,7 @@ class TestEndToEnd:
                         prompt=PromptTemplate(
                             input_variables=["text"],
                             partial_variables={
-                                'output_data_model': 'The output should be formatted as a JSON instance that conforms to the JSON schema below.\n\nAs an example, for the schema {"properties": {"foo": {"title": "Foo", "description": "a list of strings", "type": "array", "items": {"type": "string"}}}, "required": ["foo"]}\nthe object {"foo": ["bar", "baz"]} is a well-formatted instance of the schema. The object {"properties": {"foo": ["bar", "baz"]}} is not well-formatted.\n\nHere is the output schema:\n```\n{"properties": {"keywords": {"title": "Keywords", "description": "List of keywords", "type": "array", "items": {"type": "string"}}}, "required": ["keywords"]}\n```'
+                                'output_data_model': 'The output should be formatted as a JSON instance that conforms to the JSON schema below.\n\nAs an example, for the schema {"properties": {"foo": {"title": "Foo", "description": "a list of strings", "type": "array", "items": {"type": "string"}}}, "required": ["foo"]}\nthe object {"foo": ["bar", "baz"]} is a well-formatted instance of the schema. The object {"properties": {"foo": ["bar", "baz"]}} is not well-formatted.\n\nHere is the output schema:\n```\n{"properties": {"keywords": {"description": "List of keywords", "items": {"type": "string"}, "title": "Keywords", "type": "array"}}, "required": ["keywords"]}\n```'
                             },
                             template=f"{prompt_template_text}\n\n{{output_data_model}}"
                         )
