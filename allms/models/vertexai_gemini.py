@@ -37,7 +37,7 @@ class VertexAIGeminiModel(AbstractModel):
             event_loop=event_loop
         )
 
-    def _create_llm(self) -> VertexAI:
+    def _create_llm(self) -> CustomVertexAI:
         return CustomVertexAI(
             model_name=self._config.gemini_model_name,
             max_output_tokens=self._max_output_tokens,

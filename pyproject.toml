@@ -9,16 +9,17 @@ packages = [{include = "allms"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 fsspec = "^2023.6.0"
-google-cloud-aiplatform = "1.38.0"
+google-cloud-aiplatform = "1.70.0"
 pydash = "^7.0.6"
 transformers = "^4.34.1"
 pydantic = "2.7.4"
-langchain = "^0.0.351"
-aioresponses = "^0.7.6"
+langchain = "0.3.6"
 tiktoken = "^0.7.0"
 openai = "1.51.0"
 pytest-mock = "^3.14.0"
 respx = "^0.21.1"
+langchain-community = "^0.3.5"
+langchain-google-vertexai = "^2.0.7"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"

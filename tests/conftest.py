@@ -4,7 +4,6 @@ from dataclasses import dataclass
 from unittest.mock import patch
 
 import pytest
-from aioresponses import aioresponses
 from langchain_community.llms.fake import FakeListLLM
 
 from allms.domain.configuration import (
@@ -93,9 +92,3 @@ def models():
                     event_loop=event_loop
                 )
             }
-
-
-@pytest.fixture
-def mock_aioresponse():
-    with aioresponses() as http_mock:
-        yield http_mock

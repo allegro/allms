@@ -1,7 +1,6 @@
 import json
 from unittest.mock import patch
 
-from langchain.schema import OutputParserException
 import pytest
 
 from allms.domain.input_data import InputData
@@ -42,7 +41,7 @@ class TestOutputModelParserForDifferentModelOutputs:
         # WHEN & THEN
         for model in models.values():
             model_response = model.generate(prompt, input_data, SummaryOutputClass)
-            assert "A ValidationError has occurred for the model response" in model_response[0].error
+            assert "OutputParserException" in model_response[0].error
             assert model_response[0].response is None
 
     @patch("langchain.chains.base.Chain.arun")
