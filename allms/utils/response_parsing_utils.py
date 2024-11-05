@@ -3,6 +3,7 @@ import typing
 
 from langchain.output_parsers import PydanticOutputParser
 from langchain.schema import OutputParserException
+from pydantic import ValidationError
 
 from allms.domain.response import ResponseData, ResponseParsingOutput
 
@@ -45,6 +46,15 @@ class ResponseParser:
                     The exception message: {output_parser_exception}
                     """
             )
+        except ValidationError as validation_error:
+            return ResponseParsingOutput(
+                response=None,
+                error_message=f"""
+                    A ValidationError has occurred for the model response: {model_response_data.response}
+                    The exception message: {validation_error}
+                    """
+            )
+
         
     def parse_model_output(
         self, 
