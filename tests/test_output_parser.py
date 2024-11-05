@@ -9,7 +9,7 @@ from allms.domain.prompt_dto import SummaryOutputClass, KeywordsOutputClass
 
 class TestOutputModelParserForDifferentModelOutputs:
     @patch("langchain.chains.base.Chain.arun")
-    @patch("langchain_community.llms.vertexai.VertexAI.get_num_tokens")
+    @patch("langchain_google_vertexai.llms.VertexAI.get_num_tokens")
     def test_output_parser_returns_desired_format(self, tokens_mock, chain_run_mock, models):
         # GIVEN
         text_output = "This is the model output"
@@ -27,7 +27,7 @@ class TestOutputModelParserForDifferentModelOutputs:
             assert model_response[0].response.summary == text_output
 
     @patch("langchain.chains.base.Chain.arun")
-    @patch("langchain_community.llms.vertexai.VertexAI.get_num_tokens")
+    @patch("langchain_google_vertexai.llms.VertexAI.get_num_tokens")
     def test_output_parser_returns_error_when_model_output_returns_different_field(self, tokens_mock, chain_run_mock, models):
         # GIVEN
         text_output = "This is the model output"
@@ -45,7 +45,7 @@ class TestOutputModelParserForDifferentModelOutputs:
             assert model_response[0].response is None
 
     @patch("langchain.chains.base.Chain.arun")
-    @patch("langchain_community.llms.vertexai.VertexAI.get_num_tokens")
+    @patch("langchain_google_vertexai.llms.VertexAI.get_num_tokens")
     @pytest.mark.parametrize("json_response", [
         ("{\"summary\": \"This is the model output\"}"),
         ("Sure! Here's the JSON you wanted: {\"summary\": \"This is the model output\"} Have a nice day!"),
@@ -66,7 +66,7 @@ class TestOutputModelParserForDifferentModelOutputs:
             assert model_response[0].response == SummaryOutputClass(summary="This is the model output")
 
     @patch("langchain.chains.base.Chain.arun")
-    @patch("langchain_community.llms.vertexai.VertexAI.get_num_tokens")
+    @patch("langchain_google_vertexai.llms.VertexAI.get_num_tokens")
     def test_output_parser_returns_error_when_json_is_garbled(self, tokens_mock, chain_run_mock, models):
         # GIVEN
         chain_run_mock.return_value = "Sure! Here's the JSON you wanted: {\"summary: \"text\"}"
@@ -82,7 +82,7 @@ class TestOutputModelParserForDifferentModelOutputs:
             assert model_response[0].response is None
 
     @patch("langchain.chains.base.Chain.arun")
-    @patch("langchain_community.llms.vertexai.VertexAI.get_num_tokens")
+    @patch("langchain_google_vertexai.llms.VertexAI.get_num_tokens")
     def test_output_parser_returns_parsed_class_when_model_output_returns_too_many_fields(self, tokens_mock, chain_run_mock, models):
         # GIVEN
         text_output = "This is the model output"
@@ -100,7 +100,7 @@ class TestOutputModelParserForDifferentModelOutputs:
             assert model_response[0].response.summary == text_output
 
     @patch("langchain.chains.base.Chain.arun")
-    @patch("langchain_community.llms.vertexai.VertexAI.get_num_tokens")
+    @patch("langchain_google_vertexai.llms.VertexAI.get_num_tokens")
     def test_model_returns_output_as_python_list_correctly(self, tokens_mock, chain_run_mock, models):
         # GIVEN
         text_output = ["1", "2", "3"]
@@ -118,7 +118,7 @@ class TestOutputModelParserForDifferentModelOutputs:
             assert model_response[0].response.keywords == list(map(str, text_output))
 
     @patch("langchain.chains.base.Chain.arun")
-    @patch("langchain_community.llms.vertexai.VertexAI.get_num_tokens")
+    @patch("langchain_google_vertexai.llms.VertexAI.get_num_tokens")
     def test_model_output_when_input_data_is_empty(self, tokens_mock, chain_run_mock, models):
         # GIVEN
         expected_model_response = "2+2 is 4"

@@ -1,5 +1,6 @@
 import asyncio
 import typing
+from contextlib import ExitStack
 from dataclasses import dataclass
 from unittest.mock import patch
 
@@ -35,13 +36,13 @@ class ModelWithoutAsyncRequestsMock(FakeListLLM):
 def models():
     event_loop = asyncio.new_event_loop()
 
-    with (
-        patch("allms.models.vertexai_palm.CustomVertexAI", ModelWithoutAsyncRequestsMock),
-        patch("allms.models.vertexai_gemini.CustomVertexAI", ModelWithoutAsyncRequestsMock),
-        patch("allms.models.vertexai_gemma.VertexAIModelGardenWrapper", ModelWithoutAsyncRequestsMock),
-        patch("allms.models.azure_llama2.AzureMLOnlineEndpointAsync", ModelWithoutAsyncRequestsMock),
-        patch("allms.models.azure_mistral.AzureMLOnlineEndpointAsync", ModelWithoutAsyncRequestsMock)
-    ):
+    with ExitStack() as stack:
+        stack.enter_context(patch("allms.models.vertexai_palm.CustomVertexAI", ModelWithoutAsyncRequestsMock))
+        stack.enter_context(patch("allms.models.vertexai_gemini.CustomVertexAI", ModelWithoutAsyncRequestsMock))
+        stack.enter_context(patch("allms.models.vertexai_gemma.VertexAIModelGardenWrapper", ModelWithoutAsyncRequestsMock))
+        stack.enter_context(patch("allms.models.azure_llama2.AzureMLOnlineEndpointAsync", ModelWithoutAsyncRequestsMock))
+        stack.enter_context(patch("allms.models.azure_mistral.AzureMLOnlineEndpointAsync", ModelWithoutAsyncRequestsMock))
+
         return {
                 "azure_open_ai": AzureOpenAIModel(
                     config=AzureOpenAIConfiguration(

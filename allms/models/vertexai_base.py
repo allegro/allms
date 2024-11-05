@@ -9,6 +9,10 @@ from pydash import chain
 from allms.constants.vertex_ai import VertexModelConstants
 
 
+class GCPInvalidRequestError(Exception):
+    pass
+
+
 class CustomVertexAI(VertexAI):
     async def _agenerate(
         self,
@@ -30,6 +34,9 @@ class CustomVertexAI(VertexAI):
             run_manager=run_manager,
             **kwargs
         )
+
+        if not all(result.generations):
+            raise GCPInvalidRequestError("The response is empty. It may have been blocked due to content filtering.")
 
         return LLMResult(
             generations=(

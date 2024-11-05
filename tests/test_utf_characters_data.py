@@ -6,7 +6,7 @@ import pytest
 
 class TestModelBehaviorForSpecialCharacters:
     @patch("langchain.chains.base.Chain.arun")
-    @patch("langchain_community.llms.vertexai.VertexAI.get_num_tokens")
+    @patch("langchain_google_vertexai.llms.VertexAI.get_num_tokens")
     @pytest.mark.parametrize("input_character", list(html.entities.entitydefs.values()))
     def test_model_is_not_broken_by_special_characters(self, tokens_mock, arun_mock, input_character, models):
         # GIVEN

@@ -1,5 +1,6 @@
 import re
 
+import pytest
 import httpx
 import respx
 from httpx import Response
@@ -9,7 +10,7 @@ from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, Pr
 from allms.constants.input_data import IODataConstants
 from allms.domain.configuration import VertexAIConfiguration
 from allms.domain.prompt_dto import KeywordsOutputClass
-from allms.models.vertexai_gemini import VertexAIGeminiModel
+from allms.models import VertexAIGeminiModel, HarmBlockThreshold, HarmCategory
 from allms.utils import io_utils
 from tests.conftest import AzureOpenAIEnv
 
@@ -156,7 +157,7 @@ class TestEndToEnd:
         model_config = VertexAIConfiguration(
             cloud_project="dummy-project-id",
             cloud_location="us-central1",
-            gemini_model_name="gemini-model-name"
+            gemini_model_name="gemini-1.0-pro-001"
         )
 
         # WHEN
@@ -181,3 +182,58 @@ class TestEndToEnd:
             # THEN
             assert responses[0].response is None
             assert "Request timed out" in responses[0].error
+    def test_gemini_specific_args_are_passed_to_model(self):
+        gemini_model_name = "gemini-1.5-pro-001"
+        gemini_safety_settings = {
+            HarmCategory.HARM_CATEGORY_UNSPECIFIED: HarmBlockThreshold.BLOCK_NONE,
+            HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+            HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+            HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+            HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_NONE,
+        }
+        model_config = VertexAIConfiguration(
+            cloud_project="dummy-project-id",
+            cloud_location="us-central1",
+            gemini_model_name=gemini_model_name,
+            gemini_safety_settings=gemini_safety_settings
+        )
+        # WHEN
+        gemini_model = VertexAIGeminiModel(config=model_config)
+
+        # THEN
+        assert gemini_model._llm.model_name == gemini_model_name
+        assert gemini_model._llm.safety_settings == gemini_safety_settings
+
+    @pytest.mark.parametrize(
+        "model_name", [
+            "gemini-1.0-pro", "gemini-1.5-pro", "gemini-1.5-flash","gemini-1.0-pro-001", "gemini-1.0-pro-002",
+            "gemini-1.5-pro-001", "gemini-1.5-flash-001", "gemini-1.5-pro-preview-0514"
+        ]
+    )
+    def test_correct_gemini_model_name_work(self, model_name):
+        # GIVEN
+        model_config = VertexAIConfiguration(
+            cloud_project="dummy-project-id",
+            cloud_location="us-central1",
+            gemini_model_name=model_name,
+        )
+
+        # WHEN & THEN
+        VertexAIGeminiModel(config=model_config)
+
+    @pytest.mark.parametrize(
+        "model_name", [
+            "gemini-2.0-pro", "geminis-1.5-pro", "gemini-flash", "gemini-1.5-preview-pro", "gpt4"
+        ]
+    )
+    def test_incorrect_gemini_model_name_fail(self, model_name):
+        # GIVEN
+        model_config = VertexAIConfiguration(
+            cloud_project="dummy-project-id",
+            cloud_location="us-central1",
+            gemini_model_name=model_name,
+        )
+
+        # WHEN & THEN
+        with pytest.raises(ValueError, match=f"Model {model_name} is not supported."):
+            VertexAIGeminiModel(config=model_config)

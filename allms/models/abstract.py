@@ -33,6 +33,7 @@ from allms.domain.enumerables import AggregationLogicForLongInputData, LanguageM
 from allms.domain.input_data import InputData
 from allms.domain.prompt_dto import SummaryOutputClass, KeywordsOutputClass
 from allms.domain.response import ResponseData
+from allms.models.vertexai_base import GCPInvalidRequestError
 from allms.utils.long_text_processing_utils import get_max_allowed_number_of_tokens
 from allms.utils.response_parsing_utils import ResponseParser
 
@@ -168,7 +169,7 @@ class AbstractModel(ABC):
             self,
             prompt_template_args: dict,
             system_prompt: SystemMessagePromptTemplate
-    ) -> list[SystemMessagePromptTemplate | HumanMessagePromptTemplate]:
+    ) -> typing.List[typing.Union[SystemMessagePromptTemplate, HumanMessagePromptTemplate]]:
         human_message = HumanMessagePromptTemplate(prompt=PromptTemplate(**prompt_template_args))
         if not system_prompt:
             return [human_message]
@@ -261,7 +262,7 @@ class AbstractModel(ABC):
                 model_response = None
                 error_message = f"{IODataConstants.ERROR_MESSAGE_STR}: {invalid_request_error}"
 
-        except (InvalidArgument, ValueError, TimeoutError, openai.APIError) as other_error:
+        except (InvalidArgument, ValueError, TimeoutError, openai.APIError, GCPInvalidRequestError) as other_error:
             model_response = None
             logger.info(f"Error for id {input_data.id} has occurred. Message: {other_error} ")
             error_message = f"{type(other_error).__name__}: {other_error}"
@@ -331,7 +332,7 @@ class AbstractModel(ABC):
                 raise ValueError(input_exception_message.get_system_prompt_contains_input_variables())
 
     @staticmethod
-    def _extract_input_variables_from_prompt(prompt: str) -> set[str]:
+    def _extract_input_variables_from_prompt(prompt: str) -> typing.Set[str]:
         input_variables_pattern = r'(?<!\{)\{([^{}]+)\}(?!\})'
         input_variables_set = set(re.findall(input_variables_pattern, prompt))
         return input_variables_set

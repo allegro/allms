@@ -1,12 +1,20 @@
+import typing
 from asyncio import AbstractEventLoop
-from langchain_community.llms.vertexai import VertexAI
 from typing import Optional
+
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_google_vertexai import VertexAI
+from vertexai.preview import tokenization
+from vertexai.tokenization._tokenizers import Tokenizer
 
 from allms.defaults.general_defaults import GeneralDefaults
 from allms.defaults.vertex_ai import GeminiModelDefaults
 from allms.domain.configuration import VertexAIConfiguration
-from allms.models.vertexai_base import CustomVertexAI
+from allms.domain.input_data import InputData
 from allms.models.abstract import AbstractModel
+from allms.models.vertexai_base import CustomVertexAI
+
+BASE_GEMINI_MODEL_NAMES = ["gemini-1.0-pro", "gemini-1.5-pro", "gemini-1.5-flash"]
 
 
 class VertexAIGeminiModel(AbstractModel):
@@ -28,6 +36,8 @@ class VertexAIGeminiModel(AbstractModel):
         self._verbose = verbose
         self._config = config
 
+        self._gcp_tokenizer = self._get_gcp_tokenizer(self._config.gemini_model_name)
+
         super().__init__(
             temperature=temperature,
             model_total_max_tokens=model_total_max_tokens,
@@ -44,7 +54,29 @@ class VertexAIGeminiModel(AbstractModel):
             temperature=self._temperature,
             top_p=self._top_p,
             top_k=self._top_k,
+            safety_settings=self._config.gemini_safety_settings,
             verbose=self._verbose,
             project=self._config.cloud_project,
             location=self._config.cloud_location
         )
+
+    def _get_prompt_tokens_number(self, prompt: ChatPromptTemplate, input_data: InputData) -> int:
+        return self._gcp_tokenizer.count_tokens(
+            prompt.format_prompt(**input_data.input_mappings).to_string()
+        ).total_tokens
+
+    def _get_model_response_tokens_number(self, model_response: typing.Optional[str]) -> int:
+        if model_response:
+            return self._gcp_tokenizer.count_tokens(model_response).total_tokens
+        return 0
+
+    @staticmethod
+    def _get_gcp_tokenizer(model_name) -> Tokenizer:
+        try:
+            return tokenization.get_tokenizer_for_model(model_name)
+        except ValueError:
+            for base_model_name in BASE_GEMINI_MODEL_NAMES:
+                if model_name.startswith(base_model_name):
+                    return tokenization.get_tokenizer_for_model(base_model_name)
+            raise
+
