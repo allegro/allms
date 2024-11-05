@@ -16,8 +16,9 @@ pydantic = "1.10.13"
 langchain = "^0.0.351"
 aioresponses = "^0.7.6"
 tiktoken = "^0.7.0"
-openai = "^1.52.0"
+openai = "1.51.0"
 pytest-mock = "^3.14.0"
+respx = "^0.21.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"
