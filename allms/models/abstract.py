@@ -262,7 +262,8 @@ class AbstractModel(ABC):
                 model_response = None
                 error_message = f"{IODataConstants.ERROR_MESSAGE_STR}: {invalid_request_error}"
 
-        except (InvalidArgument, ValueError, TimeoutError, openai.APIError, GCPInvalidRequestError) as other_error:
+        except (InvalidArgument, ValueError, TimeoutError, openai.APIError, GCPInvalidRequestError,
+                openai.APITimeoutError) as other_error:
             model_response = None
             logger.info(f"Error for id {input_data.id} has occurred. Message: {other_error} ")
             error_message = f"{type(other_error).__name__}: {other_error}"
