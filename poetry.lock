@@ -185,8 +185,8 @@ files = [
 lazy-object-proxy = ">=1.4.0"
 typing-extensions = {version = ">=4.0.0", markers = "python_version < \"3.11\""}
 wrapt = [
-    {version = ">=1.14,<2", markers = "python_version >= \"3.11\""},
     {version = ">=1.11,<2", markers = "python_version < \"3.11\""},
+    {version = ">=1.14,<2", markers = "python_version >= \"3.11\""},
 ]
 
 [[package]]
@@ -809,12 +809,12 @@ files = [
 google-auth = ">=2.14.1,<3.0.dev0"
 googleapis-common-protos = ">=1.56.2,<2.0.dev0"
 grpcio = [
-    {version = ">=1.49.1,<2.0dev", optional = true, markers = "python_version >= \"3.11\" and extra == \"grpc\""},
     {version = ">=1.33.2,<2.0dev", optional = true, markers = "python_version < \"3.11\" and extra == \"grpc\""},
+    {version = ">=1.49.1,<2.0dev", optional = true, markers = "python_version >= \"3.11\" and extra == \"grpc\""},
 ]
 grpcio-status = [
-    {version = ">=1.49.1,<2.0.dev0", optional = true, markers = "python_version >= \"3.11\" and extra == \"grpc\""},
     {version = ">=1.33.2,<2.0.dev0", optional = true, markers = "python_version < \"3.11\" and extra == \"grpc\""},
+    {version = ">=1.49.1,<2.0.dev0", optional = true, markers = "python_version >= \"3.11\" and extra == \"grpc\""},
 ]
 proto-plus = [
     {version = ">=1.22.3,<2.0.0dev", markers = "python_version < \"3.13\""},
@@ -1742,6 +1742,22 @@ pydantic = ">=2,<3"
 [package.extras]
 anthropic = ["anthropic[vertexai] (>=0.35.0,<1)"]
 mistral = ["langchain-mistralai (>=0.2.0,<1)"]
+
+[[package]]
+name = "langchain-openai"
+version = "0.2.5"
+description = "An integration package connecting OpenAI and LangChain"
+optional = false
+python-versions = "<4.0,>=3.9"
+files = [
+    {file = "langchain_openai-0.2.5-py3-none-any.whl", hash = "sha256:745fd9d51a5a3a9cb8839d41f3786ab38dfc539e47c713a806cbca32f3d0875c"},
+    {file = "langchain_openai-0.2.5.tar.gz", hash = "sha256:55b98711a880474ec363267bf6cd0e2727dc00e8433731318d063a2184582c28"},
+]
+
+[package.dependencies]
+langchain-core = ">=0.3.15,<0.4.0"
+openai = ">=1.52.0,<2.0.0"
+tiktoken = ">=0.7,<1"
 
 [[package]]
 name = "langchain-text-splitters"
@@ -2746,8 +2762,8 @@ files = [
 astroid = ">=2.15.8,<=2.17.0-dev0"
 colorama = {version = ">=0.4.5", markers = "sys_platform == \"win32\""}
 dill = [
-    {version = ">=0.3.6", markers = "python_version >= \"3.11\""},
     {version = ">=0.2", markers = "python_version < \"3.11\""},
+    {version = ">=0.3.6", markers = "python_version >= \"3.11\""},
 ]
 isort = ">=4.2.5,<6"
 mccabe = ">=0.6,<0.8"
@@ -4130,4 +4146,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9.0,<4.0"
-content-hash = "892d85f4d206759b5b071de06e529adf3e371fe60b4c8aeb9d08aa51afdf59e0"
+content-hash = "81875fac184b574522efb01c0291be79698d0c7fa9e9cbccff1725305a23fe46"

@@ -1,7 +1,7 @@
 from asyncio import AbstractEventLoop
 from typing import Optional
 
-from langchain.chat_models import AzureChatOpenAI
+from langchain_openai import AzureChatOpenAI
 
 from allms.defaults.azure_defaults import AzureGptTurboDefaults
 from allms.defaults.general_defaults import GeneralDefaults
@@ -38,7 +38,7 @@ class AzureOpenAIModel(AbstractModel):
             deployment_name=self._config.deployment,
             api_version=self._config.api_version,
             model_name=self._config.model_name,
-            base_url=self._config.base_url,
+            azure_endpoint=self._config.base_url,
             api_key=self._config.api_key,
             azure_ad_token=self._config.azure_ad_token,
             temperature=self._temperature,
