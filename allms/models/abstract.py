@@ -5,6 +5,7 @@ import typing
 import urllib
 from abc import ABC, abstractmethod
 from functools import partial
+from urllib.error import URLError
 
 import google
 import openai
@@ -77,8 +78,8 @@ class AbstractModel(ABC):
 
         self._predict_example = create_base_retry_decorator(
             error_types=[
-                openai.error.RateLimitError, openai.error.APIError, openai.error.Timeout,
-                openai.error.APIConnectionError, openai.error.ServiceUnavailableError,
+                openai.RateLimitError, openai.APIError, openai.Timeout,
+                openai.APIConnectionError, openai.InternalServerError,
                 google.api_core.exceptions.ResourceExhausted, urllib.error.HTTPError
             ],
             max_retries=max_retries,
@@ -252,16 +253,17 @@ class AbstractModel(ABC):
                     model_response = await chain.arun({})
                 else:
                     model_response = await chain.arun(**input_data.input_mappings)
-        except openai.error.InvalidRequestError as invalid_request_error:
+        except openai.InternalServerError as invalid_request_error:
             logger.info(f"Error for id {input_data.id} has occurred. Message: {invalid_request_error} ")
-            if invalid_request_error.error.code == "content_filter":
+            if invalid_request_error.code == "content_filter":
                 model_response = None
                 error_message = f"{IODataConstants.CONTENT_FILTER_MESSAGE}: {invalid_request_error}"
             else:
                 model_response = None
                 error_message = f"{IODataConstants.ERROR_MESSAGE_STR}: {invalid_request_error}"
 
-        except (InvalidArgument, ValueError, TimeoutError, openai.error.Timeout, GCPInvalidRequestError) as other_error:
+        except (InvalidArgument, ValueError, TimeoutError, openai.APIError, GCPInvalidRequestError,
+                openai.APITimeoutError) as other_error:
             model_response = None
             logger.info(f"Error for id {input_data.id} has occurred. Message: {other_error} ")
             error_message = f"{type(other_error).__name__}: {other_error}"

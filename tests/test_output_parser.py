@@ -1,7 +1,6 @@
 import json
 from unittest.mock import patch
 
-from langchain.schema import OutputParserException
 import pytest
 
 from allms.domain.input_data import InputData
@@ -104,7 +103,7 @@ class TestOutputModelParserForDifferentModelOutputs:
     @patch("langchain_google_vertexai.llms.VertexAI.get_num_tokens")
     def test_model_returns_output_as_python_list_correctly(self, tokens_mock, chain_run_mock, models):
         # GIVEN
-        text_output = [1, 2, 3]
+        text_output = ["1", "2", "3"]
         expected_model_response = json.dumps({"text": text_output, "keywords": text_output})
         chain_run_mock.return_value = expected_model_response
         tokens_mock.return_value = 1

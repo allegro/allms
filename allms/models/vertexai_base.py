@@ -1,9 +1,9 @@
 from typing import List, Optional, Any, Dict
 
 from google.cloud.aiplatform.models import Prediction
-from langchain_google_vertexai import VertexAI, VertexAIModelGarden
 from langchain_core.callbacks import AsyncCallbackManagerForLLMRun
 from langchain_core.outputs import LLMResult, Generation
+from langchain_google_vertexai import VertexAI, VertexAIModelGarden
 from pydash import chain
 
 from allms.constants.vertex_ai import VertexModelConstants
