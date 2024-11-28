@@ -170,7 +170,7 @@ We assume that you have python `3.10.*` installed on your machine.
 You can set it up using [pyenv](https://github.com/pyenv/pyenv#installationbrew) 
 ([How to install pyenv on MacOS](https://jordanthomasg.medium.com/python-development-on-macos-with-pyenv-2509c694a808)). To install allms env locally:
 
-* Activate your pyenv;
+* Activate your venv;
 * Install Poetry via:
 
 ```bash
@@ -183,11 +183,6 @@ make install-poetry
 make install-env
 ```
 
-* Now you can use this venv for development. You can activate it in your shell by running:
-
-```bash
-make activate-env # or simply, poetry shell
-```
 
 ### Tests
 
