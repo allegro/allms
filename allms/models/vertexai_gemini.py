@@ -57,7 +57,9 @@ class VertexAIGeminiModel(AbstractModel):
             safety_settings=self._config.gemini_safety_settings,
             verbose=self._verbose,
             project=self._config.cloud_project,
-            location=self._config.cloud_location
+            location=self._config.cloud_location,
+            api_endpoint=self._config.api_endpoint,
+            api_transport=self._config.api_transport
         )
 
     def _get_prompt_tokens_number(self, prompt: ChatPromptTemplate, input_data: InputData) -> int:
