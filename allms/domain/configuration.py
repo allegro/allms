@@ -30,6 +30,8 @@ class VertexAIConfiguration:
     palm_model_name: Optional[str] = PalmModelDefaults.GCP_MODEL_NAME
     gemini_model_name: Optional[str] = GeminiModelDefaults.GCP_MODEL_NAME
     gemini_safety_settings: Optional[Dict[HarmCategory, HarmBlockThreshold]] = None
+    api_endpoint: Optional[str] = None
+    api_transport: Optional[str] = None
 
 
 class VertexAIModelGardenConfiguration(VertexAIConfiguration):
