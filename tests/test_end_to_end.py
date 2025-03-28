@@ -228,7 +228,7 @@ class TestEndToEnd:
             "gemini-2.0-flash-lite", "gemini-2.0-flash", "ggemini-2.5-pro-exp-03-25","gemini-x"
         ]
     )
-    def test_correct_gemini_model_name_work(self, caplog, model_name):
+    def test_default_tokenizer_fallback(self, caplog, model_name):
         # GIVEN
         model_config = VertexAIConfiguration(
             cloud_project="dummy-project-id",
