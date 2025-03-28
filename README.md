@@ -26,13 +26,13 @@ ___
 
 ## Supported Models
 
-| LLM Family  | Hosting             | Supported LLMs                                                   |
-|-------------|---------------------|------------------------------------------------------------------|
-| GPT(s)      | OpenAI endpoint     | `gpt-3.5-turbo`, `gpt-4`, `gpt-4-turbo`, `gpt4-o`, `gpt4-o mini` |
-| Google LLMs | VertexAI deployment | `text-bison@001`, `gemini-pro`, `gemini-flash`                   |
-| Llama2      | Azure deployment    | `llama2-7b`, `llama2-13b`, `llama2-70b`                          |
-| Mistral     | Azure deployment    | `Mistral-7b`, `Mixtral-7bx8`                                     |
-| Gemma       | GCP deployment      | `gemma`                                                          |
+| LLM Family  | Hosting             | Supported LLMs                                                                    |
+| :---------- | :------------------ | :---------------------------------------------------------------------------------- |
+| GPT(s)      | OpenAI endpoint     | `gpt-3.5-turbo`, `gpt-4`, `gpt-4-turbo`, `gpt4-o`, `gpt4-o mini`                   |
+| Google LLMs | VertexAI deployment | `text-bison@001`, [Gemini family](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models#gemini-models) |
+| Llama2      | Azure deployment    | `llama2-7b`, `llama2-13b`, `llama2-70b`                                          |
+| Mistral     | Azure deployment    | `Mistral-7b`, `Mixtral-7bx8`                                                      |
+| Gemma       | GCP deployment      | `gemma`                                                                           |
 
 * Do you already have a subscription to a Cloud Provider for any the models above? Configure
 the model using your credentials and start querying!

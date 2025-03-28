@@ -64,7 +64,8 @@ VertexAIConfiguration(
 #### Parameters
 - `cloud_project` (`str`): The GCP project to use when making Vertex API calls.
 - `cloud_location` (`str`): The region to use when making API calls.
-- `gemini_model_name` (`str`): The specific Gemini version you want to use. Default value: `gemini-pro` (i.e. Gemini 1.0).
+- `gemini_model_name` (`str`): The specific Gemini version you want to use. Default value: `gemini-pro` (i.e. Gemini 1.0)
+  For an updated list of supported models, please refer to the official [Gemini API documentation](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models#gemini-models).
 
 ---
 
