@@ -1,4 +1,5 @@
 import re
+import logging
 
 import pytest
 import httpx
@@ -8,6 +9,7 @@ from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, Pr
     SystemMessagePromptTemplate
 
 from allms.constants.input_data import IODataConstants
+from allms.defaults.vertex_ai import GeminiModelDefaults
 from allms.domain.configuration import VertexAIConfiguration
 from allms.domain.prompt_dto import KeywordsOutputClass
 from allms.models import VertexAIGeminiModel, HarmBlockThreshold, HarmCategory
@@ -220,4 +222,28 @@ class TestEndToEnd:
 
         # WHEN & THEN
         VertexAIGeminiModel(config=model_config)
+
+    @pytest.mark.parametrize(
+        "model_name", [
+            "gemini-2.0-flash-lite", "gemini-2.0-flash", "ggemini-2.5-pro-exp-03-25","gemini-x"
+        ]
+    )
+    def test_correct_gemini_model_name_work(self, caplog, model_name):
+        # GIVEN
+        model_config = VertexAIConfiguration(
+            cloud_project="dummy-project-id",
+            cloud_location="us-central1",
+            gemini_model_name=model_name,
+        )
+
+        # WHEN
+        with caplog.at_level(logging.INFO):
+            VertexAIGeminiModel(config=model_config)
+
+        # THEN
+        assert (
+                f"Model {model_name} is not supported for tokenization, using default tokenizer:"
+                f" {GeminiModelDefaults.GCP_MODEL_NAME}"
+                in caplog.text
+        )
 

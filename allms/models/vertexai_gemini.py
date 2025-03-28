@@ -25,7 +25,6 @@ BASE_GEMINI_MODEL_NAMES = [
     "gemini-1.5-flash",
     # TODO: add `gemini-2.0-flash` when available
 ]
-DEFAULT_TOKENIZER_MODEL_NAME = "gemini-1.5-pro"
 
 
 class VertexAIGeminiModel(AbstractModel):
@@ -95,9 +94,10 @@ class VertexAIGeminiModel(AbstractModel):
                     # https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/list-token#supported-models
                     # `gemini-2.0` family of models is not supported yet, hence we need this workaround
                     logger.info(
-                        f"Model %s is not supported for tokenization, using default tokenizer: {DEFAULT_TOKENIZER_MODEL_NAME}",
+                        f"Model %s is not supported for tokenization, using default tokenizer:"
+                        f" {GeminiModelDefaults.GCP_MODEL_NAME}",
                         model_name
                     )
-                    return tokenization.get_tokenizer_for_model(DEFAULT_TOKENIZER_MODEL_NAME)
+                    return tokenization.get_tokenizer_for_model(GeminiModelDefaults.GCP_MODEL_NAME)
             raise
 
