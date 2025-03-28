@@ -221,19 +221,3 @@ class TestEndToEnd:
         # WHEN & THEN
         VertexAIGeminiModel(config=model_config)
 
-    @pytest.mark.parametrize(
-        "model_name", [
-            "gemini-2.0-pro", "geminis-1.5-pro", "gemini-flash", "gemini-1.5-preview-pro", "gpt4"
-        ]
-    )
-    def test_incorrect_gemini_model_name_fail(self, model_name):
-        # GIVEN
-        model_config = VertexAIConfiguration(
-            cloud_project="dummy-project-id",
-            cloud_location="us-central1",
-            gemini_model_name=model_name,
-        )
-
-        # WHEN & THEN
-        with pytest.raises(ValueError, match=f"Model {model_name} is not supported."):
-            VertexAIGeminiModel(config=model_config)

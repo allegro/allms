@@ -1,9 +1,9 @@
+import logging
 import typing
 from asyncio import AbstractEventLoop
 from typing import Optional
 
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_google_vertexai import VertexAI
 from vertexai.preview import tokenization
 from vertexai.tokenization._tokenizers import Tokenizer
 
@@ -13,8 +13,19 @@ from allms.domain.configuration import VertexAIConfiguration
 from allms.domain.input_data import InputData
 from allms.models.abstract import AbstractModel
 from allms.models.vertexai_base import CustomVertexAI
+from allms.utils.logger_utils import setup_logger
 
-BASE_GEMINI_MODEL_NAMES = ["gemini-1.0-pro", "gemini-1.5-pro", "gemini-1.5-flash"]
+
+logger = logging.getLogger(__name__)
+setup_logger()
+
+BASE_GEMINI_MODEL_NAMES = [
+    "gemini-1.0-pro",
+    "gemini-1.5-pro",
+    "gemini-1.5-flash",
+    # TODO: add `gemini-2.0-flash` when available
+]
+DEFAULT_TOKENIZER_MODEL_NAME = "gemini-1.5-pro"
 
 
 class VertexAIGeminiModel(AbstractModel):
@@ -70,6 +81,7 @@ class VertexAIGeminiModel(AbstractModel):
             return self._gcp_tokenizer.count_tokens(model_response).total_tokens
         return 0
 
+
     @staticmethod
     def _get_gcp_tokenizer(model_name) -> Tokenizer:
         try:
@@ -78,5 +90,14 @@ class VertexAIGeminiModel(AbstractModel):
             for base_model_name in BASE_GEMINI_MODEL_NAMES:
                 if model_name.startswith(base_model_name):
                     return tokenization.get_tokenizer_for_model(base_model_name)
+                else:
+                    # Currently supported models for token listing and counting
+                    # https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/list-token#supported-models
+                    # `gemini-2.0` family of models is not supported yet, hence we need this workaround
+                    logger.info(
+                        f"Model %s is not supported for tokenization, using default tokenizer: {DEFAULT_TOKENIZER_MODEL_NAME}",
+                        model_name
+                    )
+                    return tokenization.get_tokenizer_for_model(DEFAULT_TOKENIZER_MODEL_NAME)
             raise
 
