@@ -1,5 +1,5 @@
-from dataclasses import dataclass
-from typing import Dict, Optional
+from dataclasses import dataclass, field
+from typing import Dict, Optional, Sequence
 
 from langchain_google_vertexai import HarmBlockThreshold, HarmCategory
 
@@ -31,7 +31,9 @@ class VertexAIConfiguration:
     gemini_model_name: Optional[str] = GeminiModelDefaults.GCP_MODEL_NAME
     gemini_safety_settings: Optional[Dict[HarmCategory, HarmBlockThreshold]] = None
     api_endpoint: Optional[str] = None
+    endpoint_version: Optional[str] = "v1beta1" # the same as in _VertexAIBase
     api_transport: Optional[str] = None
+    extra_headers: Optional[Sequence[tuple[str, str]]] = field(default_factory=list)
 
 
 class VertexAIModelGardenConfiguration(VertexAIConfiguration):
