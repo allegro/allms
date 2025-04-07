@@ -250,9 +250,11 @@ class AbstractModel(ABC):
             async with self._semaphore:
                 if number_of_input_mappings == 0:
                     # Workaround when prompt without symbolic variables is passed - arun() can't be called without any arg
-                    model_response = await chain.arun({})
+                    model_response = chain.run({}) if hasattr(chain.llm, "api_transport") and chain.llm.api_transport == "rest" else await chain.arun({})
                 else:
-                    model_response = await chain.arun(**input_data.input_mappings)
+                    model_response = chain.run(
+                        **input_data.input_mappings) if hasattr(chain.llm, "api_transport") and chain.llm.api_transport == "rest" else await chain.arun(
+                        **input_data.input_mappings)
         except openai.InternalServerError as invalid_request_error:
             logger.info(f"Error for id {input_data.id} has occurred. Message: {invalid_request_error} ")
             if invalid_request_error.code == "content_filter":

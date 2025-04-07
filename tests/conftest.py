@@ -2,7 +2,7 @@ import asyncio
 import typing
 from contextlib import ExitStack
 from dataclasses import dataclass
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 import pytest
 from langchain_community.llms.fake import FakeListLLM
@@ -26,10 +26,14 @@ class GenerativeModels:
     azure_gpt: typing.Optional[AzureOpenAIModel] = None
     vertex_palm: typing.Optional[VertexAIPalmModel] = None
 
+@dataclass
+class Client:
+    client: typing.Any
 
-class ModelWithoutAsyncRequestsMock(FakeListLLM):
+
+class ModelWithoutAsyncRequestsMock(FakeListLLM, Client):
     def __init__(self, *args, **kwargs):
-        super().__init__(responses=["{}"])
+        super().__init__(responses=["{}"], client=Mock())
 
 
 @pytest.fixture(scope="function")
