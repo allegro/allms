@@ -165,8 +165,8 @@ class TestEndToEnd:
         # WHEN
         gemini_model = VertexAIGeminiModel(config=model_config)
 
-        # WHEN
-        gemini_model._llm.model_name == "gemini-model-name"
+        # THEN
+        assert gemini_model._llm.model_name == "gemini-1.0-pro-001"
 
     def test_model_times_out(
             self,
