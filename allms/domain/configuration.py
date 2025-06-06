@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Dict, Optional, Sequence
 
+import google.oauth2.credentials
 from langchain_google_vertexai import HarmBlockThreshold, HarmCategory
 
 from allms.defaults.vertex_ai import GeminiModelDefaults, PalmModelDefaults
@@ -33,7 +34,7 @@ class VertexAIConfiguration:
     api_endpoint: Optional[str] = None
     endpoint_version: Optional[str] = "v1beta1" # the same as in _VertexAIBase
     api_transport: Optional[str] = None
-    extra_headers: Optional[Sequence[tuple[str, str]]] = field(default_factory=list)
+    credentials: Optional[google.oauth2.credentials.Credentials] = None
 
 
 class VertexAIModelGardenConfiguration(VertexAIConfiguration):
