@@ -78,6 +78,13 @@ class VertexAIGeminiModel(AbstractModel):
         # it's set v1beta1 by default
         if self._config.endpoint_version:
             llm.client.endpoint_version = self._config.endpoint_version
+        # NOTE: `ChatVertexAI` is child of _VertexAICommon and grandchild of _VertexAIBase, the same as `VertexAI`,
+        # so they use the same validation in langchain_google_vertexai._base._VertexAIBase.validate_params_base.
+        # In `validate_params_base` the `default_metadata` is set to `additional_headers`.
+        # And in constructor of `ChatVertexAI` `additional_headers` is not passed.
+        # So `default_metadata` is always set to default value.
+        if self._config.extra_headers:
+            llm.client.default_metadata = self._config.extra_headers
         return llm
 
     def _get_prompt_tokens_number(self, prompt: ChatPromptTemplate, input_data: InputData) -> int:
