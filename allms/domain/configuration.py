@@ -34,6 +34,7 @@ class VertexAIConfiguration:
     api_endpoint: Optional[str] = None
     endpoint_version: Optional[str] = "v1beta1" # the same as in _VertexAIBase
     api_transport: Optional[str] = None
+    extra_headers: Optional[Sequence[tuple[str, str]]] = field(default_factory=list)
     credentials: Optional[google.oauth2.credentials.Credentials] = None
 
 
