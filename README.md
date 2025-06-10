@@ -204,20 +204,20 @@ via the github action `.github/workflows/docs.yml`
 When a new version of allms is ready to be released, do the following operations:
 
 1. **Merge to master** the dev branch in which the new version has been specified:
-    1. In this branch, `version` under `[tool.poetry]` section in `pyproject.toml` should be updated, e.g `0.1.0`;
+    1. In this branch, `version` under `[tool.poetry]` section in `pyproject.toml` should be updated with `<NEW-VERSION>`, e.g `0.1.0`.
 
-2. **Tag the new master** with the name of the newest version using command-line:
-    1. `git tag -a <NEW-VERSION>`
-    2. `git push origin <NEW-VERSION>`
+2. **Make a GitHub release**:
+   1. Build package locally with command:
+      ```bash
+      make build-package
+      ```
+      This will create two files in the `dist` directory: `allms-<NEW-VERSION>.whl` and `allms-<NEW-VERSION>.tar.gz`;
+   2. Go to _Releases_ → _Draft a new release_;
+   3. In _Choose a tag_ window, choose `Create a new tag` and set the tag name to `<NEW_VERSION>`;
+   4. Upload `allms-<NEW-VERSION>.whl` and `allms-<NEW-VERSION>.tar.gz` as assets;
+   5. Click `Publish release`.
 
 3. **Publish package to PyPI**:
-    1. Go to _Actions_ → _Manual Publish To PyPI_;
-    2. Select "master" as branch and click _Run workflow_;
-    3. If successful, you will find the package under # TODO: open-source.
-
-4. **Make a GitHub release**:
-    1. Go to _Releases_ → _Draft a new release_;
-    2. Select the recently created tag in _Choose a tag_ window;
-    3. Copy/paste all the content present in the CHANGELOG under the version you are about to release;
-    4. Upload `allms-<NEW-VERSION>.whl` and `allms-<NEW-VERSION>.tar.gz` as assets;
-    5. Click `Publish release`.
+    1. Go to _Actions_ → _Release_;
+    2. Select _tags_ → `<NEW_VERSION>` and click _Run workflow_;
+    3. If successful, you will find the package under: https://pypi.org/project/allms/ 
