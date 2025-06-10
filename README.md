@@ -205,10 +205,10 @@ When a new version of allms is ready to be released, do the following operations
 
 1. **Merge to master** the dev branch in which the new version has been specified:
     1. In this branch, `version` under `[tool.poetry]` section in `pyproject.toml` should be updated, e.g `0.1.0`;
-    2. Update the CHANGELOG, specifying the new release.
 
-2. **Tag the new master** with the name of the newest version:
-    1. e.g `v0.1.0`.
+2. **Tag the new master** with the name of the newest version using command-line:
+    1. `git tag -a <NEW-VERSION>`
+    2. `git push origin <NEW-VERSION>`
 
 3. **Publish package to PyPI**:
     1. Go to _Actions_ → _Manual Publish To PyPI_;
